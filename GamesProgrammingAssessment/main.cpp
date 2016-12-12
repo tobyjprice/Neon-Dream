@@ -1,10 +1,11 @@
 #include <iostream>
 #include "SDL.h"
 #include "game_state.h"
+#include <chrono>
 
-static void process_input(bool *running, SDL_Window&);
-static void update(game_state *game);
-static void render(game_state *game);
+static void process_input(bool* running, SDL_Window&, game_state* game);
+static void update(game_state* game, double deltaTime);
+static void render(game_state& game);
 
 int main(int argc, char* argv[])
 {
@@ -15,25 +16,54 @@ int main(int argc, char* argv[])
 	}
 	SDL_Log("SDL initialised OK!\n");
 
-	SDL_Window *window;
-	SDL_Renderer *renderer;
-	game_state game;
+	SDL_Window* window = NULL;
+	SDL_Renderer* renderer = NULL;
+	
 
-	SDL_CreateWindowAndRenderer(1600, 900, SDL_WINDOW_RESIZABLE, &window, &renderer);
+	game_state game(renderer);
+
+	SDL_CreateWindowAndRenderer(224, 248, SDL_WINDOW_RESIZABLE, &window, &game.gameRenderer);
+
+	SDL_RenderSetLogicalSize(game.gameRenderer, 224, 248);
+	game.load_resources();
+	game.load_map();
 
 	bool running = true;
+	std::chrono::high_resolution_clock::time_point prevTime = std::chrono::high_resolution_clock::now();
+	double acc = 0.0;
+	double dt = 0.00025;
+	double t = 0.0;
 
 	while (running)
 	{
-		process_input(&running, *window);
-		update(&game);
-		render(&game);
+		auto currTime = std::chrono::high_resolution_clock::now();
+		auto deltaTime = std::chrono::duration_cast<std::chrono::nanoseconds>(currTime - prevTime);
+		double frameTimeNano = deltaTime.count();
+		double frameTimeSec = frameTimeNano / 1000000000;
+		prevTime = currTime;
+
+		acc += frameTimeSec;
+
+		while (acc >= dt)
+		{
+			update(&game, dt);
+			acc -= dt;
+			t += dt;
+		}
+
+		process_input(&running, *window, &game);
+		render(game);
+
+		sprite* temp = game.spriteList[0];
+
+		std::cout << 1 / frameTimeSec << std::endl;
+		//std::cout << temp->xVel << " " << temp->yVel << " " << temp->direction << temp->yPos << std::endl;
 	}
 
 	return 0;
 }
 
-void process_input(bool *running, SDL_Window &window)
+void process_input(bool* running, SDL_Window &window, game_state* game)
 {
 	SDL_Event event;
 
@@ -47,6 +77,22 @@ void process_input(bool *running, SDL_Window &window)
 			case SDLK_ESCAPE:
 				*running = false;
 				break;
+			case SDLK_w:
+				SDL_Log("Key w pressed");
+				game->spriteList[0]->setDir(1);
+				break;
+			case SDLK_a:
+				SDL_Log("Key a pressed");
+				game->spriteList[0]->setDir(2);
+				break;
+			case SDLK_s:
+				SDL_Log("Key s pressed");
+				game->spriteList[0]->setDir(3);
+				break;
+			case SDLK_d:
+				SDL_Log("Key d pressed");
+				game->spriteList[0]->setDir(4);
+				break;
 			default:
 				break;
 			}
@@ -58,15 +104,24 @@ void process_input(bool *running, SDL_Window &window)
 			break;
 		}
 	}
-
 }
 
-void update(game_state *game)
+void update(game_state* game, double deltaTime)
 {
-
+	game->spriteList[0]->update(deltaTime, game->spriteList[1]);
+	/*for (auto& sprite : game->spriteList)
+	{
+		sprite->update(deltaTime, game->spriteList[1]);
+	} */
 }
 
-void render(game_state *game)
+void render(game_state& game)
 {
-
+	SDL_SetRenderDrawColor(game.gameRenderer, 0, 0, 0, 255);
+	SDL_RenderClear(game.gameRenderer);
+	for (auto& sprite : game.spriteList)
+	{
+		SDL_RenderCopy(game.gameRenderer, sprite->getTexture(), NULL, &sprite->getRect());
+	}
+	SDL_RenderPresent(game.gameRenderer);
 }
