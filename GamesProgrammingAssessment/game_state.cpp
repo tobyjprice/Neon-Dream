@@ -18,11 +18,22 @@ game_state::~game_state()
 
 void game_state::load_resources()
 {
-	sprite* tempSprite = new sprite(16, 16, 80, 80, "resources//test.bmp", gameRenderer);
+	sprite* tempSprite = new sprite(8, 8, 40, 40, "resources//test.bmp", gameRenderer);
+
+	tempSprite->xGridPos = 5;
+	tempSprite->yGridPos = 5;
+
 	spriteList.push_back(tempSprite);
 
-	tempSprite = new sprite(16, 16, 0, 0, "resources//test2.bmp", gameRenderer);
-	spriteList.push_back(tempSprite);
+	load_map();
+
+	/*for (int y = 0; y < 31; y++)
+	{
+		for (int x = 0; x < 28; x++)
+		{
+			std::cout << mapGrid[getArrPos(x, y, 28)];
+		}
+	} */
 }
 
 void game_state::load_map()
@@ -51,7 +62,7 @@ void game_state::populate_map()
 	{
 		for (int x = 0; x < mapWidth; x++)
 		{
-			int pointType = mapGrid[getArrPos(y, x, mapWidth)];
+			int pointType = mapGrid[getArrPos(x, y, mapWidth)];
 
 			sprite* tempSprite;
 			switch (pointType)
@@ -63,11 +74,11 @@ void game_state::populate_map()
 				spriteList.push_back(tempSprite);
 				break;
 			case 2:
-				tempSprite = new sprite(8, 8, x * 8, y * 8, "resources//pathTest.bmp", gameRenderer);
+				tempSprite = new sprite(2, 2, (x * 8) + 3, (y * 8) + 3, "resources//pathTest.bmp", gameRenderer);
 				spriteList.push_back(tempSprite);
 				break;
 			case 3:
-				tempSprite = new sprite(8, 8, x * 8, y * 8, "resources//pathTest.bmp", gameRenderer);
+				tempSprite = new sprite(4, 4, (x * 8) + 2, (y * 8) + 2, "resources//pathTest.bmp", gameRenderer);
 				spriteList.push_back(tempSprite);
 				break;
 			case 4:
@@ -81,9 +92,9 @@ void game_state::populate_map()
 	}
 }
 
-int game_state::getArrPos(int i, int j, int width)
+int game_state::getArrPos(int x, int y, int width)
 {
-	int k = (i * width) + j;
+	int k = (y * width) + x;
 
 	return k;
 }

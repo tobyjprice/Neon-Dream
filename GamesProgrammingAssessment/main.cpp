@@ -22,11 +22,12 @@ int main(int argc, char* argv[])
 
 	game_state game(renderer);
 
-	SDL_CreateWindowAndRenderer(224, 248, SDL_WINDOW_RESIZABLE, &window, &game.gameRenderer);
+	SDL_CreateWindowAndRenderer(1000, 1000, SDL_WINDOW_RESIZABLE, &window, &game.gameRenderer);
 
 	SDL_RenderSetLogicalSize(game.gameRenderer, 224, 248);
+	//game.load_map();
 	game.load_resources();
-	game.load_map();
+	
 
 	bool running = true;
 	std::chrono::high_resolution_clock::time_point prevTime = std::chrono::high_resolution_clock::now();
@@ -56,7 +57,7 @@ int main(int argc, char* argv[])
 
 		sprite* temp = game.spriteList[0];
 
-		std::cout << 1 / frameTimeSec << std::endl;
+		//std::cout << 1 / frameTimeSec << std::endl;
 		//std::cout << temp->xVel << " " << temp->yVel << " " << temp->direction << temp->yPos << std::endl;
 	}
 
@@ -108,7 +109,7 @@ void process_input(bool* running, SDL_Window &window, game_state* game)
 
 void update(game_state* game, double deltaTime)
 {
-	game->spriteList[0]->update(deltaTime, game->spriteList[1]);
+	game->spriteList[0]->update(deltaTime, game->spriteList[1], game->mapGrid);
 	/*for (auto& sprite : game->spriteList)
 	{
 		sprite->update(deltaTime, game->spriteList[1]);
