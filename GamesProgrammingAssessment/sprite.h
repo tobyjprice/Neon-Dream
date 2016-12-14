@@ -17,17 +17,18 @@ public:
 	bool checkLeft(std::vector<int>& mapGrid);
 	bool checkUp(std::vector<int>& mapGrid);
 	bool checkDown(std::vector<int>& mapGrid);
-	void setDir(int dir);
+	void setInput(int input);
 	void setVel(double x, double y);
 	int getArrPos(int x, int y);
 	int top, bottom, left, right;
 	double xPos, yPos, xVel, yVel;
-	int width, height, direction;
+	int width, height, direction, input, xPosInt, yPosInt;
 	int xGridPos, yGridPos, xAnchor, yAnchor;
 	bool moveUp, moveDown, moveLeft, moveRight;
+	SDL_Rect rect;
 private:
 	SDL_Surface* surface;
 	SDL_Texture* texture;
-	SDL_Rect rect;
+	
 };
 

@@ -4,8 +4,8 @@
 #include <chrono>
 
 static void process_input(bool* running, SDL_Window&, game_state* game);
-static void update(game_state* game, double deltaTime);
-static void render(game_state& game);
+static void update(game_state* game, double deltaTime, sprite* temp);
+static void render(game_state& game, sprite* temp);
 
 int main(int argc, char* argv[])
 {
@@ -22,11 +22,13 @@ int main(int argc, char* argv[])
 
 	game_state game(renderer);
 
-	SDL_CreateWindowAndRenderer(1000, 1000, SDL_WINDOW_RESIZABLE, &window, &game.gameRenderer);
+	SDL_CreateWindowAndRenderer(224, 248, SDL_WINDOW_RESIZABLE, &window, &game.gameRenderer);
 
 	SDL_RenderSetLogicalSize(game.gameRenderer, 224, 248);
 	//game.load_map();
 	game.load_resources();
+
+	sprite* tempSprite = new sprite(1, 1, game.spriteList[0]->xPos + game.spriteList[0]->xAnchor, game.spriteList[0]->yPos + game.spriteList[0]->yAnchor, "resources//test2.bmp", game.gameRenderer);
 	
 
 	bool running = true;
@@ -47,13 +49,13 @@ int main(int argc, char* argv[])
 
 		while (acc >= dt)
 		{
-			update(&game, dt);
+			update(&game, dt, tempSprite);
 			acc -= dt;
 			t += dt;
 		}
 
 		process_input(&running, *window, &game);
-		render(game);
+		render(game, tempSprite);
 
 		sprite* temp = game.spriteList[0];
 
@@ -80,19 +82,19 @@ void process_input(bool* running, SDL_Window &window, game_state* game)
 				break;
 			case SDLK_w:
 				SDL_Log("Key w pressed");
-				game->spriteList[0]->setDir(1);
+				game->spriteList[0]->setInput(1);
 				break;
 			case SDLK_a:
 				SDL_Log("Key a pressed");
-				game->spriteList[0]->setDir(2);
+				game->spriteList[0]->setInput(2);
 				break;
 			case SDLK_s:
 				SDL_Log("Key s pressed");
-				game->spriteList[0]->setDir(3);
+				game->spriteList[0]->setInput(3);
 				break;
 			case SDLK_d:
 				SDL_Log("Key d pressed");
-				game->spriteList[0]->setDir(4);
+				game->spriteList[0]->setInput(4);
 				break;
 			default:
 				break;
@@ -107,16 +109,21 @@ void process_input(bool* running, SDL_Window &window, game_state* game)
 	}
 }
 
-void update(game_state* game, double deltaTime)
+void update(game_state* game, double deltaTime, sprite* temp)
 {
 	game->spriteList[0]->update(deltaTime, game->spriteList[1], game->mapGrid);
+
+	temp->rect.x = game->spriteList[0]->xPos + game->spriteList[0]->xAnchor;
+	temp->rect.y = game->spriteList[0]->yPos + game->spriteList[0]->yAnchor;
+
+	//std::cout << temp->rect.x << temp->rect.y << std::endl;
 	/*for (auto& sprite : game->spriteList)
 	{
 		sprite->update(deltaTime, game->spriteList[1]);
 	} */
 }
 
-void render(game_state& game)
+void render(game_state& game, sprite* temp)
 {
 	SDL_SetRenderDrawColor(game.gameRenderer, 0, 0, 0, 255);
 	SDL_RenderClear(game.gameRenderer);
@@ -124,5 +131,6 @@ void render(game_state& game)
 	{
 		SDL_RenderCopy(game.gameRenderer, sprite->getTexture(), NULL, &sprite->getRect());
 	}
+	SDL_RenderCopy(game.gameRenderer, temp->getTexture(), NULL, &temp->getRect());
 	SDL_RenderPresent(game.gameRenderer);
 }

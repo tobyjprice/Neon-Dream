@@ -18,7 +18,7 @@ game_state::~game_state()
 
 void game_state::load_resources()
 {
-	sprite* tempSprite = new sprite(8, 8, 40, 40, "resources//test.bmp", gameRenderer);
+	sprite* tempSprite = new sprite(12, 12, 108, 184, "resources//test.bmp", gameRenderer);
 
 	tempSprite->xGridPos = 5;
 	tempSprite->yGridPos = 5;

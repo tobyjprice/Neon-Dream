@@ -10,6 +10,9 @@ sprite::sprite(int w, int h, double x, double y, char* fileName, SDL_Renderer* r
 	yPos = y;
 	direction = 0;
 
+	xPosInt = xPos;
+	yPosInt = yPos;
+
 	left = xPos;
 	right = yPos + width;
 	top = yPos;
@@ -38,6 +41,36 @@ sprite::~sprite()
 
 void sprite::update(double dt, sprite* collider, std::vector<int>& mapGrid)
 {
+	switch (input)
+	{
+	case 1:
+		if (checkUp(mapGrid))
+		{
+			direction = input;
+		}
+		break;
+	case 2:
+		if (checkLeft(mapGrid))
+		{
+			direction = input;
+		}
+		break;
+	case 3:
+		if (checkDown(mapGrid))
+		{
+			direction = input;
+		}
+		break;
+	case 4:
+		if (checkRight(mapGrid))
+		{
+			direction = input;
+		}
+		break;
+	default:
+		break;
+	}
+
 	switch (direction)
 	{
 	case 0:
@@ -49,62 +82,62 @@ void sprite::update(double dt, sprite* collider, std::vector<int>& mapGrid)
 	case 1:
 		if (checkUp(mapGrid))
 		{
-			xVel = 0;
-			yVel = -1;
-			yAnchor = 7;
-			direction = 1;
+			if (xPosInt >= xGridPos * 8 && xPosInt + 8 <= (xGridPos * 8) + 8)
+			{
+				xVel = 0;
+				yVel = -1;
+				yAnchor = 7;
+			}
 		}
 		else
 		{
 			yVel = 0;
 		}
-		
-		//xAnchor = 0;
 		break;
 	case 2:
 		if (checkLeft(mapGrid))
 		{
-			xVel = -1;
-			yVel = 0;
-			xAnchor = 7;
-			direction = 2;
+			if (yPosInt >= yGridPos * 8 && yPosInt + 8 <= (yGridPos * 8) + 8)
+			{
+				xVel = -1;
+				yVel = 0;
+				xAnchor = 7;
+			}
 		}
 		else
 		{
 			xVel = 0;
 		}
-		
-		//yAnchor = 0;
 		break;
 	case 3:
 		if (checkDown(mapGrid))
 		{
-			xVel = 0;
-			yVel = 1;
-			yAnchor = 0;
-			direction = 3;
+			if (xPosInt >= xGridPos * 8 && xPosInt + 8 <= (xGridPos * 8) + 8)
+			{
+				xVel = 0;
+				yVel = 1;
+				yAnchor = 0;
+			}
 		}
 		else
 		{
 			yVel = 0;
 		}
-		
-		//xAnchor = 0;
 		break;
 	case 4:
 		if (checkRight(mapGrid))
 		{
-			xVel = 1;
-			yVel = 0;
-			xAnchor = 0;
-			direction = 4;
+			if (yPosInt >= yGridPos * 8 && yPosInt + 8 <= (yGridPos * 8) + 8)
+			{
+				xVel = 1;
+				yVel = 0;
+				xAnchor = 0;
+			}
 		}
 		else
 		{
 			xVel = 0;
 		}
-		
-		//yAnchor = 0;
 		break;
 	default:
 		xVel = 0;
@@ -121,10 +154,14 @@ void sprite::update(double dt, sprite* collider, std::vector<int>& mapGrid)
 		//SDL_Log("Collision Detected");
 	}
 
-	std::cout << xAnchor << " " << yAnchor << std::endl;
+	//std::cout << xAnchor << " " << yAnchor << std::endl;
+	//std::cout << xGridPos << " " << yGridPos << std::endl;
 
 	xPos += xVel * 80 * dt;
 	yPos += yVel * 80 * dt;
+
+	xPosInt = xPos;
+	yPosInt = yPos;
 
 	xGridPos = (xPos + xAnchor) / 8;
 	yGridPos = (yPos + yAnchor) / 8;
@@ -134,8 +171,8 @@ void sprite::update(double dt, sprite* collider, std::vector<int>& mapGrid)
 	top = yPos;
 	bottom = yPos + height;
 
-	rect.x = xPos;
-	rect.y = yPos;
+	rect.x = xPosInt - 2;
+	rect.y = yPosInt - 2;
 
 	//std::cout << "   " << mapGrid[getArrPos(yGridPos, xGridPos - 1)] << std::endl;
 	//std::cout << mapGrid[getArrPos(yGridPos - 1, yGridPos)] << " " << yGridPos << " " << xGridPos << " " << mapGrid[getArrPos(yGridPos + 1, xGridPos)] << std::endl;
@@ -207,9 +244,9 @@ int sprite::getArrPos(int x, int y)
 	return k;
 }
 
-void sprite::setDir(int dir)
+void sprite::setInput(int in)
 {
-	direction = dir;
+	input = in;
 }
 
 void sprite::setVel(double x, double y)
