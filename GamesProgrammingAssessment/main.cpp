@@ -28,7 +28,7 @@ int main(int argc, char* argv[])
 	//game.load_map();
 	game.load_resources();
 
-	sprite* tempSprite = new sprite(1, 1, game.spriteList[0]->xPos + game.spriteList[0]->xAnchor, game.spriteList[0]->yPos + game.spriteList[0]->yAnchor, "resources//test2.bmp", game.gameRenderer);
+	sprite* tempSprite = new sprite(1, 1, game.spriteList[0]->xPos + game.spriteList[0]->xAnchor, game.spriteList[0]->yPos + game.spriteList[0]->yAnchor, SDL_LoadBMP("resources//test2.bmp"), game.gameRenderer);
 	
 
 	bool running = true;

@@ -6,7 +6,7 @@ class sprite
 {
 public:
 	sprite();
-	sprite(int w, int h, double x, double y, char*, SDL_Renderer* renderer);
+	sprite(int w, int h, double x, double y, SDL_Surface* inSurface, SDL_Renderer* renderer);
 	~sprite();
 	SDL_Texture* getTexture();
 	SDL_Rect getRect();
@@ -19,6 +19,7 @@ public:
 	bool checkDown(std::vector<int>& mapGrid);
 	void setInput(int input);
 	void setVel(double x, double y);
+	void setColorKey();
 	int getArrPos(int x, int y);
 	int top, bottom, left, right;
 	double xPos, yPos, xVel, yVel;

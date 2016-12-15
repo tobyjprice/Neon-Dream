@@ -2,7 +2,7 @@
 #include <iostream>
 //#include <vector>
 
-sprite::sprite(int w, int h, double x, double y, char* fileName, SDL_Renderer* renderer)
+sprite::sprite(int w, int h, double x, double y, SDL_Surface* inSurface, SDL_Renderer* renderer)
 {
 	width = w;
 	height = h;
@@ -26,7 +26,7 @@ sprite::sprite(int w, int h, double x, double y, char* fileName, SDL_Renderer* r
 	xGridPos = xPos / 8;
 	yGridPos = yPos / 8;
 
-	surface = SDL_LoadBMP(fileName);
+	surface = inSurface;
 	texture = SDL_CreateTextureFromSurface(renderer, surface);
 }
 
@@ -253,6 +253,15 @@ void sprite::setVel(double x, double y)
 {
 	xVel = x;
 	yVel = y;
+}
+
+void sprite::setColorKey()
+{
+	if (surface != NULL)
+	{
+		SDL_SetColorKey(surface, 1, SDL_MapRGB(surface->format, 255, 255, 255));
+
+	}
 }
 
 SDL_Texture* sprite::getTexture()
