@@ -10,6 +10,12 @@ sprite::sprite(int w, int h, double x, double y, SDL_Surface* inSurface, SDL_Ren
 	yPos = y;
 	direction = 0;
 
+	xVel = 0;
+	yVel = 0;
+
+	xAnchor = 0;
+	yAnchor = 0;
+
 	xPosInt = xPos;
 	yPosInt = yPos;
 
@@ -39,30 +45,30 @@ sprite::~sprite()
 {
 }
 
-void sprite::update(double dt, sprite* collider, std::vector<int>& mapGrid)
+void sprite::update(double dt, sprite* collider, std::vector<int>* mapGrid)
 {
 	switch (input)
 	{
 	case 1:
-		if (checkUp(mapGrid))
+		if (checkUp(*mapGrid) != 1 && checkUp(*mapGrid) != 4)
 		{
 			direction = input;
 		}
 		break;
 	case 2:
-		if (checkLeft(mapGrid))
+		if (checkLeft(*mapGrid) != 1 && checkLeft(*mapGrid) != 4)
 		{
 			direction = input;
 		}
 		break;
 	case 3:
-		if (checkDown(mapGrid))
+		if (checkDown(*mapGrid) != 1 && checkDown(*mapGrid) != 4)
 		{
 			direction = input;
 		}
 		break;
 	case 4:
-		if (checkRight(mapGrid))
+		if (checkRight(*mapGrid) != 1 && checkRight(*mapGrid) != 4)
 		{
 			direction = input;
 		}
@@ -80,7 +86,7 @@ void sprite::update(double dt, sprite* collider, std::vector<int>& mapGrid)
 		yAnchor = 0;
 		break;
 	case 1:
-		if (checkUp(mapGrid))
+		if (checkUp(*mapGrid) != 1 && checkUp(*mapGrid) != 4)
 		{
 			if (xPosInt >= xGridPos * 8 && xPosInt + 8 <= (xGridPos * 8) + 8)
 			{
@@ -95,7 +101,7 @@ void sprite::update(double dt, sprite* collider, std::vector<int>& mapGrid)
 		}
 		break;
 	case 2:
-		if (checkLeft(mapGrid))
+		if (checkLeft(*mapGrid) != 1 && checkLeft(*mapGrid) != 4)
 		{
 			if (yPosInt >= yGridPos * 8 && yPosInt + 8 <= (yGridPos * 8) + 8)
 			{
@@ -110,7 +116,7 @@ void sprite::update(double dt, sprite* collider, std::vector<int>& mapGrid)
 		}
 		break;
 	case 3:
-		if (checkDown(mapGrid))
+		if (checkDown(*mapGrid) != 1 && checkDown(*mapGrid) != 4)
 		{
 			if (xPosInt >= xGridPos * 8 && xPosInt + 8 <= (xGridPos * 8) + 8)
 			{
@@ -125,7 +131,7 @@ void sprite::update(double dt, sprite* collider, std::vector<int>& mapGrid)
 		}
 		break;
 	case 4:
-		if (checkRight(mapGrid))
+		if (checkRight(*mapGrid) != 1 && checkRight(*mapGrid) != 4)
 		{
 			if (yPosInt >= yGridPos * 8 && yPosInt + 8 <= (yGridPos * 8) + 8)
 			{
@@ -147,16 +153,25 @@ void sprite::update(double dt, sprite* collider, std::vector<int>& mapGrid)
 		break;
 	}
 
-	if (checkCollision(this, collider))
+	/*if (checkCollision(this, collider))
 	{
 		setVel(xVel, 0);
 		direction = 5;
 		//SDL_Log("Collision Detected");
-	}
+	}*/
 
 	//std::cout << xAnchor << " " << yAnchor << std::endl;
 	//std::cout << xGridPos << " " << yGridPos << std::endl;
 
+	move(dt);
+
+	//std::cout << "   " << mapGrid[getArrPos(yGridPos, xGridPos - 1)] << std::endl;
+	//std::cout << mapGrid[getArrPos(yGridPos - 1, yGridPos)] << " " << yGridPos << " " << xGridPos << " " << mapGrid[getArrPos(yGridPos + 1, xGridPos)] << std::endl;
+	//std::cout << "   " << mapGrid[getArrPos(yGridPos, xGridPos + 1)] << std::endl << std::endl;
+}
+
+void sprite::move(double dt)
+{
 	xPos += xVel * 80 * dt;
 	yPos += yVel * 80 * dt;
 
@@ -167,74 +182,34 @@ void sprite::update(double dt, sprite* collider, std::vector<int>& mapGrid)
 	yGridPos = (yPos + yAnchor) / 8;
 
 	left = xPos;
-	right = yPos + width;
+	right = xPos + width;
 	top = yPos;
 	bottom = yPos + height;
 
 	rect.x = xPosInt - 2;
 	rect.y = yPosInt - 2;
-
-	//std::cout << "   " << mapGrid[getArrPos(yGridPos, xGridPos - 1)] << std::endl;
-	//std::cout << mapGrid[getArrPos(yGridPos - 1, yGridPos)] << " " << yGridPos << " " << xGridPos << " " << mapGrid[getArrPos(yGridPos + 1, xGridPos)] << std::endl;
-	//std::cout << "   " << mapGrid[getArrPos(yGridPos, xGridPos + 1)] << std::endl << std::endl;
 }
 
-bool sprite::checkCollision(sprite* one, sprite* two)
-{
-	if (one->bottom > two->top && one->top < two->bottom && one->right > two->left && one->left < two->right)
-	{
-		return true;
-	}
 
-	return false;
+
+int sprite::checkRight(std::vector<int>& mapGrid)
+{
+	return mapGrid[getArrPos(xGridPos + 1, yGridPos)];
 }
 
-bool sprite::checkRight(std::vector<int>& mapGrid)
+int sprite::checkLeft(std::vector<int>& mapGrid)
 {
-	if (mapGrid[getArrPos(xGridPos + 1, yGridPos)] == 1 || mapGrid[getArrPos(xGridPos + 1, yGridPos)] == 4)
-	{
-		return false;
-	}
-	else
-	{
-		return true;
-	}
+	return mapGrid[getArrPos(xGridPos - 1, yGridPos)];
 }
 
-bool sprite::checkLeft(std::vector<int>& mapGrid)
+int sprite::checkUp(std::vector<int>& mapGrid)
 {
-	if (mapGrid[getArrPos(xGridPos - 1, yGridPos)] == 1 || mapGrid[getArrPos(xGridPos - 1, yGridPos)] == 4)
-	{
-		return false;
-	}
-	else
-	{
-		return true;
-	}
+	return mapGrid[getArrPos(xGridPos, yGridPos - 1)];
 }
 
-bool sprite::checkUp(std::vector<int>& mapGrid)
+int sprite::checkDown(std::vector<int>& mapGrid)
 {
-	if (mapGrid[getArrPos(xGridPos, yGridPos - 1)] == 1 || mapGrid[getArrPos(xGridPos, yGridPos - 1)] == 4)
-	{
-		return false;
-	}
-	else
-	{
-		return true;
-	}
-}
-
-bool sprite::checkDown(std::vector<int>& mapGrid)
-{
-	if (mapGrid[getArrPos(xGridPos, yGridPos + 1)] == 1 || mapGrid[getArrPos(xGridPos, yGridPos + 1)] == 4)
-	{
-		return false;
-	}
-	else
-	{
-		return true;
-	}
+	return mapGrid[getArrPos(xGridPos, yGridPos + 1)];
 }
 
 int sprite::getArrPos(int x, int y)
@@ -253,15 +228,6 @@ void sprite::setVel(double x, double y)
 {
 	xVel = x;
 	yVel = y;
-}
-
-void sprite::setColorKey()
-{
-	if (surface != NULL)
-	{
-		SDL_SetColorKey(surface, 1, SDL_MapRGB(surface->format, 255, 255, 255));
-
-	}
 }
 
 SDL_Texture* sprite::getTexture()

@@ -1,4 +1,5 @@
 #include "game_state.h"
+#include "SDL_image.h"
 #include <iostream>
 #include <sstream>
 #include <fstream>
@@ -16,34 +17,33 @@ game_state::~game_state()
 {
 }
 
+void game_state::load_new_game()
+{
+	paused = false;
+	load_resources();
+	load_map();
+	populate_map();
+	load_sprites();
+}
+
 void game_state::load_resources()
 {
-	playerSurface = SDL_LoadBMP("resources//test.bmp");
-	bottomLeft = SDL_LoadBMP("resources//Corner-Bottom-Left.bmp");
-	bottomRight = SDL_LoadBMP("resources//Corner-Bottom-Right.bmp");
-	topLeft = SDL_LoadBMP("resources//Corner-Top-Left.bmp");
-	topRight = SDL_LoadBMP("resources//Corner-Top-Right.bmp");
-	horiBottom = SDL_LoadBMP("resources//Horizontal-Bottom.bmp");
-	horiTop = SDL_LoadBMP("resources//Horizontal-Top.bmp");
-	vertLeft = SDL_LoadBMP("resources//Vertical-Left.bmp");
-	vertRight = SDL_LoadBMP("resources//Vertical-Right.bmp");
-
-	sprite* tempSprite = new sprite(12, 12, 108, 184, playerSurface, gameRenderer);
-
-	tempSprite->xGridPos = 5;
-	tempSprite->yGridPos = 5;
-
-	spriteList.push_back(tempSprite);
-
-	load_map();
-
-	/*for (int y = 0; y < 31; y++)
-	{
-		for (int x = 0; x < 28; x++)
-		{
-			std::cout << mapGrid[getArrPos(x, y, 28)];
-		}
-	} */
+	playerSurface = IMG_Load("resources//test.bmp");
+	bottomLeft = IMG_Load("resources//Bottom-Left-Corner.png");
+	bottomRight = IMG_Load("resources//Bottom-Right-Corner.png");
+	topLeft = IMG_Load("resources//Top-Left-Corner.png");
+	topRight = IMG_Load("resources//Top-Right-Corner.png");
+	horiBottom = IMG_Load("resources//Bottom-Horizontal.png");
+	horiTop = IMG_Load("resources//Top-Horizontal.png");
+	vertLeft = IMG_Load("resources//Left-Vertical.png");
+	vertRight = IMG_Load("resources//Right-Vertical.png");
+	bottomRightInside = IMG_Load("resources//Bottom-Right-Corner-Inside.png");
+	bottomLeftInside = IMG_Load("resources//Bottom-Left-Corner-Inside.png");
+	topRightInside = IMG_Load("resources//Top-Right-Corner-Inside.png");
+	topLeftInside = IMG_Load("resources//Top-Left-Corner-Inside.png");
+	ghostWall = IMG_Load("resources//Ghost-Wall.png");
+	pellet = IMG_Load("resources//Pellet.png");
+	powerup = IMG_Load("resources//powerup.png");
 }
 
 void game_state::load_map()
@@ -63,7 +63,7 @@ void game_state::load_map()
 		mapGrid.push_back(std::stoi(temp));
 	}
 
-	populate_map();
+	file.close();
 }
 
 void game_state::populate_map()
@@ -81,25 +81,46 @@ void game_state::populate_map()
 				break;
 			case 1: // Wall
 				tempSprite = new sprite(8, 8, x * 8, y * 8, getWallSurface(x, y, mapWidth), gameRenderer);
-				tempSprite->setColorKey();
 				spriteList.push_back(tempSprite);
 				break;
 			case 2: // Pellet
-				tempSprite = new sprite(2, 2, (x * 8) + 3, (y * 8) + 3, SDL_LoadBMP("resources//pathTest.bmp"), gameRenderer);
+				tempSprite = new sprite(2, 2, (x * 8) + 3, (y * 8) + 3, pellet, gameRenderer);
 				spriteList.push_back(tempSprite);
 				break;
 			case 3: // Power up
-				tempSprite = new sprite(4, 4, (x * 8) + 2, (y * 8) + 2, SDL_LoadBMP("resources//pathTest.bmp"), gameRenderer);
+				tempSprite = new sprite(4, 4, (x * 8) + 2, (y * 8) + 2, powerup, gameRenderer);
 				spriteList.push_back(tempSprite);
 				break;
 			case 4: // Ghost Gate
-				tempSprite = new sprite(8, 8, x * 8, y * 8, SDL_LoadBMP("resources//test2.bmp"), gameRenderer);
+				tempSprite = new sprite(8, 8, x * 8, y * 8, ghostWall, gameRenderer);
 				spriteList.push_back(tempSprite);
 				break;
 			default:
 				break;
 			}
 		}
+	}
+}
+
+void game_state::load_sprites()
+{
+	sprite* tempSprite = new sprite(12, 12, 108, 184, playerSurface, gameRenderer);
+
+	tempSprite->xGridPos = 5;
+	tempSprite->yGridPos = 5;
+
+	spriteList.push_back(tempSprite);
+	player = tempSprite;
+
+	ghost* tempGhost = new ghost(12, 12, 108, 88, powerup, gameRenderer);
+	spriteList.push_back(tempGhost);
+	ghostList.push_back(tempGhost);
+
+	for (int x = 0; x < 3; x++)
+	{
+		ghost* tempGhost = new ghost(12, 12, 108/*94 + (x * 14)*/, 88/*118*/, powerup, gameRenderer);
+		spriteList.push_back(tempGhost);
+		ghostList.push_back(tempGhost);
 	}
 }
 
@@ -173,19 +194,19 @@ SDL_Surface* game_state::getWallSurface(int x, int y, int width)
 	{
 		if (downLeftObj != 1)
 		{
-			tempSurface = topRight;
+			tempSurface = topRightInside;
 		}
 		else if (upLeftObj != 1)
 		{
-			tempSurface = bottomRight;
+			tempSurface = bottomRightInside;
 		}
 		else if (downRightObj != 1)
 		{
-			tempSurface = topLeft;
+			tempSurface = topLeftInside;
 		}
 		else if (upRightObj != 1)
 		{
-			tempSurface = bottomLeft;
+			tempSurface = bottomLeftInside;
 		}
 		else
 		{
@@ -224,20 +245,21 @@ SDL_Surface* game_state::getWallSurface(int x, int y, int width)
 	{
 		tempSurface = bottomRight;
 	}
-	else if (upObj == 0 && downObj == 0 && rightObj == 1 && leftObj == 1)
+	else if (upObj == 0 && downObj == 5 && (rightObj == 1 || rightObj == 4) && (leftObj == 4 || leftObj == 1))
 	{
-		// Center box bottom line
-		tempSurface = horiBottom;
-	}
-	else if (upObj == 0 && downObj == 0 && (rightObj == 4 || leftObj == 4))
-	{
-		// Center Box Top and Bottom line
 		tempSurface = horiTop;
 	}
-	else if (upObj == 1 && downObj == 1 && rightObj == 0)
+	else if (upObj == 5 && downObj == 0 && (rightObj == 1 || rightObj == 4) && (leftObj == 4 || leftObj == 1))
 	{
-		// Center box left and right line
-		tempSurface = NULL;// vertRight;
+		tempSurface = horiBottom;
+	}
+	else if (upObj == 1 && downObj == 1 && rightObj == 0 && leftObj == 5)
+	{
+		tempSurface = vertRight;
+	}
+	else if (upObj == 1 && downObj == 1 && rightObj == 5 && leftObj == 0)
+	{
+		tempSurface = vertLeft;
 	}
 	else
 	{
@@ -245,6 +267,43 @@ SDL_Surface* game_state::getWallSurface(int x, int y, int width)
 	}
 
 	return tempSurface;
+}
+
+void game_state::update(double dt)
+{
+	player->update(dt, spriteList[0], &mapGrid);
+
+	for (auto& elem : ghostList)
+	{
+		elem->update(dt, spriteList[0], &mapGrid);
+
+		if (checkCollision(player, elem))
+		{
+			SDL_Log("COLLISION");
+		}
+		else
+		{
+			//SDL_Log("NOTHING");
+		}
+	}
+}
+
+bool game_state::checkCollision(sprite* one, sprite* two)
+{
+	if (one->bottom > two->top && one->top < two->bottom && one->right > two->left && one->left < two->right)
+	{
+		return true;
+		playerDeath();
+	}
+	else
+	{
+		return false;
+	}
+}
+
+void game_state::playerDeath()
+{
+
 }
 
 int game_state::getArrPos(int x, int y, int width)

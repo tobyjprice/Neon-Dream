@@ -1,5 +1,6 @@
 #include <iostream>
 #include "SDL.h"
+#include "SDL_image.h"
 #include "game_state.h"
 #include <chrono>
 
@@ -16,20 +17,18 @@ int main(int argc, char* argv[])
 	}
 	SDL_Log("SDL initialised OK!\n");
 
-	SDL_Window* window = NULL;
-	SDL_Renderer* renderer = NULL;
-	
+	SDL_DisplayMode display;
+	SDL_GetDesktopDisplayMode(0, &display);
 
+	SDL_Window* window = SDL_CreateWindow("Toby Price - 13480955", display.w / 4, display.h / 4, display.w / 2, display.h / 2, SDL_WINDOW_RESIZABLE);
+	SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, NULL);
 	game_state game(renderer);
 
-	SDL_CreateWindowAndRenderer(224, 248, SDL_WINDOW_RESIZABLE, &window, &game.gameRenderer);
-
-	SDL_RenderSetLogicalSize(game.gameRenderer, 224, 248);
-	//game.load_map();
-	game.load_resources();
+	SDL_RenderSetLogicalSize(game.gameRenderer, 224, 278);
+	
+	game.load_new_game();
 
 	sprite* tempSprite = new sprite(1, 1, game.spriteList[0]->xPos + game.spriteList[0]->xAnchor, game.spriteList[0]->yPos + game.spriteList[0]->yAnchor, SDL_LoadBMP("resources//test2.bmp"), game.gameRenderer);
-	
 
 	bool running = true;
 	std::chrono::high_resolution_clock::time_point prevTime = std::chrono::high_resolution_clock::now();
@@ -57,8 +56,6 @@ int main(int argc, char* argv[])
 		process_input(&running, *window, &game);
 		render(game, tempSprite);
 
-		sprite* temp = game.spriteList[0];
-
 		//std::cout << 1 / frameTimeSec << std::endl;
 		//std::cout << temp->xVel << " " << temp->yVel << " " << temp->direction << temp->yPos << std::endl;
 	}
@@ -82,19 +79,19 @@ void process_input(bool* running, SDL_Window &window, game_state* game)
 				break;
 			case SDLK_w:
 				SDL_Log("Key w pressed");
-				game->spriteList[0]->setInput(1);
+				game->player->setInput(1);
 				break;
 			case SDLK_a:
 				SDL_Log("Key a pressed");
-				game->spriteList[0]->setInput(2);
+				game->player->setInput(2);
 				break;
 			case SDLK_s:
 				SDL_Log("Key s pressed");
-				game->spriteList[0]->setInput(3);
+				game->player->setInput(3);
 				break;
 			case SDLK_d:
 				SDL_Log("Key d pressed");
-				game->spriteList[0]->setInput(4);
+				game->player->setInput(4);
 				break;
 			default:
 				break;
@@ -111,10 +108,11 @@ void process_input(bool* running, SDL_Window &window, game_state* game)
 
 void update(game_state* game, double deltaTime, sprite* temp)
 {
-	game->spriteList[0]->update(deltaTime, game->spriteList[1], game->mapGrid);
-
-	temp->rect.x = game->spriteList[0]->xPos + game->spriteList[0]->xAnchor;
-	temp->rect.y = game->spriteList[0]->yPos + game->spriteList[0]->yAnchor;
+	game->update(deltaTime);
+	//game->spriteList[0]->update(deltaTime, game->spriteList[1], game->mapGrid);
+	//game->spriteList[1]->update(deltaTime, game->spriteList[0], game->mapGrid);
+	//temp->rect.x = game->spriteList[0]->xPos + game->spriteList[0]->xAnchor;
+	//temp->rect.y = game->spriteList[0]->yPos + game->spriteList[0]->yAnchor;
 
 	//std::cout << temp->rect.x << temp->rect.y << std::endl;
 	/*for (auto& sprite : game->spriteList)
