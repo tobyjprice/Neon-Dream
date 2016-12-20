@@ -3,6 +3,9 @@
 #include "sprite.h"
 #include "ghost.h"
 #include "mapPoint.h"
+#include "menu.h"
+#include "menu_main.h"
+#include "SDL_ttf.h"
 
 class game_state
 {
@@ -16,6 +19,14 @@ public:
 	void populate_map();
 	void update(double deltaTime);
 	void playerDeath();
+	void pause_game();
+	void game_over();
+	void reset_sprites_pos();
+	
+	menu* pauseMenu;
+	menu* splashScreen;
+	menu_main* mainMenu;
+	bool showSplash, showMainMenu;
 	SDL_Surface* getWallSurface(int x, int y, int width);
 	int getArrPos(int i, int j, int width);
 	sprite* getSprite(int spriteId);
@@ -26,6 +37,8 @@ public:
 	std::vector<sprite*> spriteList;
 	std::vector<int> mapGrid;
 	int mapWidth, mapHeight;
+	int currTick, lastTick;
+	int input, mainMenuOutput;
 private:
 	SDL_Surface* playerSurface;
 	SDL_Surface* bottomLeft;

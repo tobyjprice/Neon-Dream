@@ -1,2 +1,14 @@
 ﻿  game_state.cpp
+c:\users\toby\documents\university\games-programming-assessment\gamesprogrammingassessment\game_state.cpp(372): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\users\toby\documents\university\games-programming-assessment\gamesprogrammingassessment\game_state.cpp(373): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\users\toby\documents\university\games-programming-assessment\gamesprogrammingassessment\game_state.cpp(375): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\users\toby\documents\university\games-programming-assessment\gamesprogrammingassessment\game_state.cpp(376): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\users\toby\documents\university\games-programming-assessment\gamesprogrammingassessment\game_state.cpp(380): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\users\toby\documents\university\games-programming-assessment\gamesprogrammingassessment\game_state.cpp(381): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\users\toby\documents\university\games-programming-assessment\gamesprogrammingassessment\game_state.cpp(396): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\users\toby\documents\university\games-programming-assessment\gamesprogrammingassessment\game_state.cpp(397): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\users\toby\documents\university\games-programming-assessment\gamesprogrammingassessment\game_state.cpp(399): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\users\toby\documents\university\games-programming-assessment\gamesprogrammingassessment\game_state.cpp(400): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\users\toby\documents\university\games-programming-assessment\gamesprogrammingassessment\game_state.cpp(404): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\users\toby\documents\university\games-programming-assessment\gamesprogrammingassessment\game_state.cpp(405): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
   GamesProgrammingAssessment.vcxproj -> C:\Users\Toby\Documents\University\Games-Programming-Assessment\GamesProgrammingAssessment\Debug\GamesProgrammingAssessment.exe

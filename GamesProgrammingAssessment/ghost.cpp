@@ -41,9 +41,27 @@ ghost::ghost(int w, int h, int x, int y, SDL_Surface* inSurface, SDL_Renderer* r
 	texture = SDL_CreateTextureFromSurface(renderer, surface);
 }
 
-void ghost::update(double dt, sprite* collider, std::vector<int>* mapGrid)
+void ghost::update(double dt, sprite* collider, std::vector<int>* mapGrid, int tick)
 {
-	input = rand() % 1000 + 1;
+	if (tick % 400 == 0)
+	{
+		int tempR = rand() % 4 + 1;
+		if (tempR != 1 && input != 3 && input !=1)
+		{
+			input = tempR;
+		}
+		else if(tempR != 2 && input != 4 && input != 2)
+		{
+			input = tempR;
+		} else if (tempR != 3 && input != 1 && input != 3)
+		{
+			input = tempR;
+		}
+		else if(tempR != 4 && input != 1 && input != 4)
+		{
+			input = tempR;
+		}
+	}
 
 	switch (input)
 	{

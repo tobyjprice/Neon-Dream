@@ -2,6 +2,7 @@
 #include "SDL.h"
 #include "SDL_image.h"
 #include "game_state.h"
+#include "menu.h"
 #include <chrono>
 
 static void process_input(bool* running, SDL_Window&, game_state* game);
@@ -56,7 +57,7 @@ int main(int argc, char* argv[])
 		process_input(&running, *window, &game);
 		render(game, tempSprite);
 
-		//std::cout << 1 / frameTimeSec << std::endl;
+		std::cout << 1 / frameTimeSec << std::endl;
 		//std::cout << temp->xVel << " " << temp->yVel << " " << temp->direction << temp->yPos << std::endl;
 	}
 
@@ -75,23 +76,27 @@ void process_input(bool* running, SDL_Window &window, game_state* game)
 			switch (event.key.keysym.sym)
 			{
 			case SDLK_ESCAPE:
-				*running = false;
+				game->pause_game();
 				break;
 			case SDLK_w:
 				SDL_Log("Key w pressed");
-				game->player->setInput(1);
+				game->input = 1;
 				break;
 			case SDLK_a:
 				SDL_Log("Key a pressed");
-				game->player->setInput(2);
+				game->input = 2;
 				break;
 			case SDLK_s:
 				SDL_Log("Key s pressed");
-				game->player->setInput(3);
+				game->input = 3;
 				break;
 			case SDLK_d:
 				SDL_Log("Key d pressed");
-				game->player->setInput(4);
+				game->input = 4;
+				break;
+			case SDLK_RETURN:
+				SDL_Log("Key Enter pressed");
+				game->input = 5;
 				break;
 			default:
 				break;
@@ -109,25 +114,38 @@ void process_input(bool* running, SDL_Window &window, game_state* game)
 void update(game_state* game, double deltaTime, sprite* temp)
 {
 	game->update(deltaTime);
-	//game->spriteList[0]->update(deltaTime, game->spriteList[1], game->mapGrid);
-	//game->spriteList[1]->update(deltaTime, game->spriteList[0], game->mapGrid);
-	//temp->rect.x = game->spriteList[0]->xPos + game->spriteList[0]->xAnchor;
-	//temp->rect.y = game->spriteList[0]->yPos + game->spriteList[0]->yAnchor;
-
-	//std::cout << temp->rect.x << temp->rect.y << std::endl;
-	/*for (auto& sprite : game->spriteList)
-	{
-		sprite->update(deltaTime, game->spriteList[1]);
-	} */
 }
 
 void render(game_state& game, sprite* temp)
 {
 	SDL_SetRenderDrawColor(game.gameRenderer, 0, 0, 0, 255);
 	SDL_RenderClear(game.gameRenderer);
-	for (auto& sprite : game.spriteList)
+	
+	if (game.showSplash)
 	{
-		SDL_RenderCopy(game.gameRenderer, sprite->getTexture(), NULL, &sprite->getRect());
+		SDL_RenderCopy(game.gameRenderer, game.splashScreen->items[0]->texture, NULL, &game.splashScreen->items[0]->rect);
+	}
+	else if (game.showMainMenu)
+	{
+		for (auto& item : game.mainMenu->items)
+		{
+			SDL_RenderCopy(game.gameRenderer, item->texture, NULL, &item->rect);
+		}
+		
+	}
+	else 
+	{
+		for (auto& sprite : game.spriteList)
+		{
+			SDL_RenderCopy(game.gameRenderer, sprite->getTexture(), NULL, &sprite->getRect());
+		}
+		if (game.pauseMenu->items.size() > 0 && game.pauseMenu->active == true)
+		{
+			for (auto& menuItem : game.pauseMenu->items)
+			{
+				SDL_RenderCopy(game.gameRenderer, menuItem->texture, NULL, &menuItem->rect);
+			}
+		}
 	}
 	SDL_RenderCopy(game.gameRenderer, temp->getTexture(), NULL, &temp->getRect());
 	SDL_RenderPresent(game.gameRenderer);

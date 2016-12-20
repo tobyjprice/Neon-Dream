@@ -3,6 +3,8 @@
 #include <iostream>
 #include <sstream>
 #include <fstream>
+#include "menu.h"
+#include "menu_main.h"
 
 game_state::game_state(SDL_Renderer *renderer)
 {
@@ -10,6 +12,11 @@ game_state::game_state(SDL_Renderer *renderer)
 	mapGrid.reserve(28 * 31);
 	mapWidth = 28;
 	mapHeight = 31;
+	pauseMenu = new menu(gameRenderer);
+	splashScreen = new menu(gameRenderer);
+	mainMenu = new menu_main(gameRenderer);
+	showSplash = true;
+	showMainMenu = false;
 }
 
 
@@ -19,7 +26,7 @@ game_state::~game_state()
 
 void game_state::load_new_game()
 {
-	paused = false;
+	paused = true;
 	load_resources();
 	load_map();
 	populate_map();
@@ -109,8 +116,8 @@ void game_state::load_sprites()
 	tempSprite->xGridPos = 5;
 	tempSprite->yGridPos = 5;
 
-	spriteList.push_back(tempSprite);
 	player = tempSprite;
+	spriteList.push_back(player);
 
 	ghost* tempGhost = new ghost(12, 12, 108, 88, powerup, gameRenderer);
 	spriteList.push_back(tempGhost);
@@ -119,9 +126,11 @@ void game_state::load_sprites()
 	for (int x = 0; x < 3; x++)
 	{
 		ghost* tempGhost = new ghost(12, 12, 108/*94 + (x * 14)*/, 88/*118*/, powerup, gameRenderer);
-		spriteList.push_back(tempGhost);
-		ghostList.push_back(tempGhost);
+		spriteList.emplace_back(tempGhost);
+		ghostList.emplace_back(tempGhost);
 	}
+
+	lastTick = 0;
 }
 
 SDL_Surface* game_state::getWallSurface(int x, int y, int width)
@@ -271,21 +280,54 @@ SDL_Surface* game_state::getWallSurface(int x, int y, int width)
 
 void game_state::update(double dt)
 {
-	player->update(dt, spriteList[0], &mapGrid);
-
-	for (auto& elem : ghostList)
+	mainMenuOutput = -1;
+	currTick = SDL_GetTicks();
+	if (currTick == 5000)
 	{
-		elem->update(dt, spriteList[0], &mapGrid);
+		showSplash = false;
+		showMainMenu = true;
+	}
+	if (showMainMenu)
+	{
+		mainMenu->update(input, &mainMenuOutput);
+		input = 0;
+	}
+	if (!paused)
+	{
+		player->update(dt, spriteList[0], &mapGrid, currTick, input);
 
-		if (checkCollision(player, elem))
+		for (auto& elem : ghostList)
 		{
-			SDL_Log("COLLISION");
-		}
-		else
-		{
-			//SDL_Log("NOTHING");
+			elem->update(dt, spriteList[0], &mapGrid, currTick);
+
+			if (checkCollision(player, elem))
+			{
+				SDL_Log("COLLISION");
+				playerDeath();
+				//load_new_game();
+
+				//game_over();
+				break;
+			}
+			else
+			{
+				//SDL_Log("NOTHING");
+			}
 		}
 	}
+	switch (mainMenuOutput)
+	{
+	case 0:
+		showMainMenu = false;
+		//load_new_game();
+		break;
+	case 2:
+		// running = false
+		break;
+	default:
+		break;
+	}
+	lastTick = currTick;
 }
 
 bool game_state::checkCollision(sprite* one, sprite* two)
@@ -303,7 +345,79 @@ bool game_state::checkCollision(sprite* one, sprite* two)
 
 void game_state::playerDeath()
 {
+	//paused = true;
+	reset_sprites_pos();
+}
 
+void game_state::game_over()
+{
+	ghostList.clear();
+	spriteList.clear();
+	load_new_game();
+}
+
+void game_state::reset_sprites_pos()
+{
+	player->xPos = 108;
+	player->yPos = 184;
+	player->input = 0;
+	player->direction = 0;
+
+	player->xVel = 0;
+	player->yVel = 0;
+
+	player->xAnchor = 0;
+	player->yAnchor = 0;
+
+	player->xPosInt = player->xPos;
+	player->yPosInt = player->yPos;
+
+	player->rect.x = player->xPos;
+	player->rect.y = player->yPos;
+	player->rect.h = player->height;
+	player->rect.w = player->width;
+
+	player->xGridPos = player->xPos / 8;
+	player->yGridPos = player->yPos / 8;
+
+	for (auto& elem : ghostList)
+	{
+		elem->xPos = 108;
+		elem->yPos = 88;
+		elem->input = 0;
+		elem->direction = 0;
+
+		elem->xVel = 0;
+		elem->yVel = 0;
+
+		elem->xAnchor = 0;
+		elem->yAnchor = 0;
+
+		elem->xPosInt = elem->xPos;
+		elem->yPosInt = elem->yPos;
+
+		elem->rect.x = elem->xPos;
+		elem->rect.y = elem->yPos;
+		elem->rect.h = elem->height;
+		elem->rect.w = elem->width;
+
+		elem->xGridPos = elem->xPos / 8;
+		elem->yGridPos = player->yPos / 8;
+	}
+}
+
+void game_state::pause_game()
+{
+	if (!paused)
+	{
+		paused = true;
+		pauseMenu->active = true;
+	}
+	else
+	{
+		paused = false;
+		pauseMenu->active = false;
+	}
 }
 
 int game_state::getArrPos(int x, int y, int width)

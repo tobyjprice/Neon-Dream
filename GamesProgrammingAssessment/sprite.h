@@ -11,9 +11,9 @@ public:
 	SDL_Texture* getTexture();
 	SDL_Rect getRect();
 	double getXPos();
-	virtual void update(double deltaTime, sprite* collider, std::vector<int>* mapGrid);
+	virtual void update(double deltaTime, sprite* collider, std::vector<int>* mapGrid, int tick, int input);
 	void move(double deltaTime);
-	bool checkCollision(sprite* one, sprite* two);
+	void reset_sprite(int x, int y);
 	int checkRight(std::vector<int>& mapGrid);
 	int checkLeft(std::vector<int>& mapGrid);
 	int checkUp(std::vector<int>& mapGrid);

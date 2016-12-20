@@ -24,8 +24,8 @@ sprite::sprite(int w, int h, double x, double y, SDL_Surface* inSurface, SDL_Ren
 	top = yPos;
 	bottom = yPos + height;
 
-	rect.x = xPos;
-	rect.y = yPos;
+	rect.x = xPosInt;
+	rect.y = yPosInt;
 	rect.h = height;
 	rect.w = width;
 
@@ -45,7 +45,7 @@ sprite::~sprite()
 {
 }
 
-void sprite::update(double dt, sprite* collider, std::vector<int>* mapGrid)
+void sprite::update(double dt, sprite* collider, std::vector<int>* mapGrid, int tick, int input)
 {
 	switch (input)
 	{
@@ -190,7 +190,30 @@ void sprite::move(double dt)
 	rect.y = yPosInt - 2;
 }
 
+void sprite::reset_sprite(int x, int y)
+{
+	xPos = x;
+	yPos = y;
+	input = 0;
+	direction = 0;
 
+	xVel = 0;
+	yVel = 0;
+
+	xAnchor = 0;
+	yAnchor = 0;
+
+	xPosInt = xPos;
+	yPosInt = yPos;
+
+	rect.x = xPos;
+	rect.y = yPos;
+	rect.h = height;
+	rect.w = width;
+
+	xGridPos = xPos / 8;
+	yGridPos = yPos / 8;
+}
 
 int sprite::checkRight(std::vector<int>& mapGrid)
 {
