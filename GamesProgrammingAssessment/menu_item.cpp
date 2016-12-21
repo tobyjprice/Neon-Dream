@@ -17,7 +17,7 @@ menu_item::menu_item(char* inText, int x, int y, int w, int h, SDL_Renderer* inR
 			"SDL_Init Error: %s\n", SDL_GetError());
 	}
 
-	font = TTF_OpenFont("C://Users//Toby//Documents//University//Games-Programming-Assessment//GamesProgrammingAssessment//resources//true-crimes.ttf", 28);
+	font = TTF_OpenFont("resources//true-crimes.ttf", 28);
 
 	update_texture();
 }

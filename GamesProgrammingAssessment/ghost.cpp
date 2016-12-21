@@ -41,7 +41,7 @@ ghost::ghost(int w, int h, int x, int y, SDL_Surface* inSurface, SDL_Renderer* r
 	texture = SDL_CreateTextureFromSurface(renderer, surface);
 }
 
-void ghost::update(double dt, sprite* collider, std::vector<int>* mapGrid, int tick)
+void ghost::update(double dt, std::vector<int>* mapGrid, int tick)
 {
 	if (tick % (rand() % 500 + 300) == 0)
 	{
@@ -70,25 +70,25 @@ void ghost::update(double dt, sprite* collider, std::vector<int>* mapGrid, int t
 	switch (input)
 	{
 	case 1:
-		if (checkUp(*mapGrid) != 1)
+		if (checkUp(*mapGrid) != 1 && checkUp(*mapGrid) != 4)
 		{
 			direction = input;
 		}
 		break;
 	case 2:
-		if (checkLeft(*mapGrid) != 1)
+		if (checkLeft(*mapGrid) != 1 && checkLeft(*mapGrid) != 4)
 		{
 			direction = input;
 		}
 		break;
 	case 3:
-		if (checkDown(*mapGrid) != 1)
+		if (checkDown(*mapGrid) != 1 && checkDown(*mapGrid) != 4)
 		{
 			direction = input;
 		}
 		break;
 	case 4:
-		if (checkRight(*mapGrid) != 1)
+		if (checkRight(*mapGrid) != 1 && checkRight(*mapGrid) != 4)
 		{
 			direction = input;
 		}
@@ -174,7 +174,7 @@ void ghost::update(double dt, sprite* collider, std::vector<int>* mapGrid, int t
 	}
 
 	move(dt);
-}
+} 
 
 ghost::~ghost()
 {

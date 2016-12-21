@@ -45,7 +45,12 @@ sprite::~sprite()
 {
 }
 
-void sprite::update(double dt, sprite* collider, std::vector<int>* mapGrid, int tick, int input)
+void sprite::set_sfx(Mix_Chunk* pelletDeathSfx)
+{
+	pelletDeath = pelletDeathSfx;
+}
+
+void sprite::update(double dt, std::vector<int>* mapGrid, std::vector<sprite*>* pelletGrid, int tick, int input, int* score)
 {
 	switch (input)
 	{
@@ -153,12 +158,7 @@ void sprite::update(double dt, sprite* collider, std::vector<int>* mapGrid, int 
 		break;
 	}
 
-	/*if (checkCollision(this, collider))
-	{
-		setVel(xVel, 0);
-		direction = 5;
-		//SDL_Log("Collision Detected");
-	}*/
+	hitPellet(pelletGrid, score);
 
 	//std::cout << xAnchor << " " << yAnchor << std::endl;
 	//std::cout << xGridPos << " " << yGridPos << std::endl;
@@ -266,4 +266,14 @@ SDL_Rect sprite::getRect()
 double sprite::getXPos()
 {
 	return xPos;
+}
+
+void sprite::hitPellet(std::vector<sprite*>* pelletList, int* score)
+{
+	if (pelletList->at(getArrPos(xGridPos, yGridPos)) != NULL)
+	{
+		*score += 100;
+		pelletList->at(getArrPos(xGridPos,yGridPos)) = NULL;
+		Mix_PlayChannel(-1, pelletDeath, 0);
+	}
 }

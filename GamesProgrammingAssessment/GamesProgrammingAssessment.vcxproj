@@ -153,6 +153,8 @@
   <ItemGroup>
     <ClCompile Include="game_state.cpp" />
     <ClCompile Include="ghost.cpp" />
+    <ClCompile Include="log_item.cpp" />
+    <ClCompile Include="log_system.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="mapPoint.cpp" />
     <ClCompile Include="menu.cpp" />
@@ -164,6 +166,8 @@
   <ItemGroup>
     <ClInclude Include="game_state.h" />
     <ClInclude Include="ghost.h" />
+    <ClInclude Include="log_item.h" />
+    <ClInclude Include="log_system.h" />
     <ClInclude Include="mapPoint.h" />
     <ClInclude Include="menu.h" />
     <ClInclude Include="menu_item.h" />

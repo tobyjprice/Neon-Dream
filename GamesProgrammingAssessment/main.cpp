@@ -3,6 +3,7 @@
 #include "SDL_image.h"
 #include "game_state.h"
 #include "menu.h"
+#include "log_system.h"
 #include <chrono>
 
 static void process_input(bool* running, SDL_Window&, game_state* game);
@@ -27,13 +28,13 @@ int main(int argc, char* argv[])
 
 	SDL_RenderSetLogicalSize(game.gameRenderer, 224, 278);
 	
-	//game.load_resources();
 
 	game.running = true;
 	std::chrono::high_resolution_clock::time_point prevTime = std::chrono::high_resolution_clock::now();
 	double acc = 0.0;
 	double dt = 0.00025;
 	double t = 0.0;
+	int x = 0;
 
 	while (game.running)
 	{
@@ -55,8 +56,15 @@ int main(int argc, char* argv[])
 		process_input(&game.running, *window, &game);
 		render(game);
 
-		//std::cout << 1 / frameTimeSec << std::endl;
-		//std::cout << temp->xVel << " " << temp->yVel << " " << temp->direction << temp->yPos << std::endl;
+		if (x > 100)
+		{
+			game.logSystem->frameRate(frameTimeSec);
+			x = 0;
+		}
+		else
+		{
+			x++;
+		}
 	}
 
 	return 0;
@@ -180,6 +188,14 @@ void render(game_state& game)
 		{
 			SDL_RenderCopy(game.gameRenderer, sprite->getTexture(), NULL, &sprite->getRect());
 		}
+		for (auto& pellet : game.pelletList)
+		{
+			if (pellet != NULL)
+			{
+				SDL_RenderCopy(game.gameRenderer, pellet->getTexture(), NULL, &pellet->getRect());
+			}
+		}
+		SDL_RenderCopy(game.gameRenderer, game.player->getTexture(), NULL, &game.player->getRect());
 		if (game.pauseMenu->items.size() > 0 && game.pauseMenu->active == true)
 		{
 			for (auto& menuItem : game.pauseMenu->items)
@@ -192,5 +208,15 @@ void render(game_state& game)
 	{
 		SDL_RenderCopy(game.gameRenderer, game.gameOverText->texture, NULL, &game.gameOverText->rect);
 	}
+	else if (game.gameWon)
+	{
+		SDL_RenderCopy(game.gameRenderer, game.gameWonText->texture, NULL, &game.gameWonText->rect);
+	}
+	for (auto& elem : game.logSystem->logOutput)
+	{
+		SDL_RenderCopy(game.gameRenderer, elem.texture, NULL, &elem.rect);
+	}
+	SDL_RenderCopy(game.gameRenderer, game.logSystem->frameRateItem.texture, NULL, &game.logSystem->frameRateItem.rect);
+	SDL_RenderCopy(game.gameRenderer, game.logSystem->scoreItem.texture, NULL, &game.logSystem->scoreItem.rect);
 	SDL_RenderPresent(game.gameRenderer);
 }

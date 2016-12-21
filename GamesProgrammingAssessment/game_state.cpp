@@ -10,20 +10,31 @@
 
 game_state::game_state(SDL_Window* window, SDL_Renderer *renderer)
 {
+	if (TTF_Init() != 0) {
+		SDL_LogCritical(SDL_LOG_CATEGORY_APPLICATION,
+			"SDL_Init Error: %s\n", SDL_GetError());
+	}
+	SDL_Log("SDL_ttf initialised OK!\n");
+
+	logSystem = new log_system(renderer);
 	gameRenderer = renderer;
 	gameWindow = window;
 	fullscreen = false;
 	mapGrid.reserve(28 * 31);
+	pelletList.reserve(28 * 31);
+	for (int x = 0; x < 28 * 31; x++)
+	{
+		pelletList.push_back(NULL);
+	}
 	mapWidth = 28;
 	mapHeight = 31;
-
-	
 
 	pauseMenu = new menu(gameRenderer);
 	splashScreen = new menu(gameRenderer);
 	mainMenu = new menu_main(gameRenderer);
 	optionsMenu = new options_menu(gameRenderer);
-	gameOverText = new menu_item("Game Over", 118, 88, 100, 20, gameRenderer);
+	gameOverText = new menu_item("Game Over", 50, 88, 100, 20, gameRenderer);
+	gameWonText = new menu_item("Game Won", 50, 88, 100, 20, gameRenderer);
 	splashScreen->active = true;
 	mainMenu->active = false;
 	optionsMenu->active = false;
@@ -32,6 +43,7 @@ game_state::game_state(SDL_Window* window, SDL_Renderer *renderer)
 	optionsOutput = -1;
 	musicVolume = 20;
 	gameOver = false;
+	gameWon = false;
 
 	std::string volString = "Music Volume - ";
 	volString.append(std::to_string(musicVolume));
@@ -46,22 +58,23 @@ game_state::game_state(SDL_Window* window, SDL_Renderer *renderer)
 	// Initialises the gamepad/joystick, checks to see that at least one is connected
 	if (SDL_NumJoysticks() < 1)
 	{
-		SDL_Log("No Joysticks found");
+		logSystem->addLog("No Controller Found", 1);
 	}
 	else
 	{
 		gameController = SDL_GameControllerOpen(0);
 		if (gameController == NULL)
 		{
-			SDL_LogCritical(SDL_LOG_CATEGORY_APPLICATION,
-				"SDL_Init Error: %s\n", SDL_GetError());
+			logSystem->addLog("Game Controller: Not initialised", 1);
 		}
 		else
 		{
-			SDL_Log("GameController: Initialised");
+			logSystem->addLog("GameController: Initialised", 2);
 		}
 
 	}
+
+	logSystem->addLog("Game State Initialised", 2);
 }
 
 
@@ -71,11 +84,13 @@ game_state::~game_state()
 
 void game_state::load_new_game()
 {
+	logSystem->addLog("New Game Loading", 2);
 	gameEndTick = -1;
 	gameStartTick = SDL_GetTicks();
 	gameActive = false;
 	playerLives = 3;
 	paused = true;
+	playerScore = 0;
 	spriteList.clear();
 	ghostList.clear();
 	load_map();
@@ -109,8 +124,7 @@ void game_state::load_resources()
 	//Initialise SDL_mixer
 	if (Mix_OpenAudio(11025, MIX_DEFAULT_FORMAT, 2, 512) == -1)
 	{
-		SDL_LogCritical(SDL_LOG_CATEGORY_APPLICATION,
-			"SDL_Init Error: %s\n", SDL_GetError());
+		logSystem->addLog("SDL_Mixer: Failed to Initialise", 0);
 	}
 
 	mainMusic = Mix_LoadMUS("resources//Sounds//DieHistoric.wav");
@@ -123,6 +137,15 @@ void game_state::load_resources()
 	powerupSfx2 = Mix_LoadWAV("resources//Sounds//powerup2.wav");
 	loseSfx = Mix_LoadWAV("resources//Sounds//lose.wav");
 	gameOverSfx = Mix_LoadWAV("resources//Sounds//gameover.wav");
+
+	if (mainMusic != NULL || gameMusic != NULL || blipSfx != NULL || powerupSfx != NULL || powerupSfx2 != NULL || loseSfx != NULL || gameOverSfx != NULL)
+	{
+		logSystem->addLog("Sound: Loaded", 2);
+	}
+	else
+	{
+		logSystem->addLog("Sound: Load Failed", 0);
+	}
 }
 
 void game_state::load_map()
@@ -164,11 +187,11 @@ void game_state::populate_map()
 				break;
 			case 2: // Pellet
 				tempSprite = new sprite(2, 2, (x * 8) + 3, (y * 8) + 3, pellet, gameRenderer);
-				spriteList.push_back(tempSprite);
+				pelletList[getArrPos(x, y, 28)] = tempSprite;
 				break;
 			case 3: // Power up
 				tempSprite = new sprite(4, 4, (x * 8) + 2, (y * 8) + 2, powerup, gameRenderer);
-				spriteList.push_back(tempSprite);
+				pelletList[getArrPos(x, y, 28)] = tempSprite;
 				break;
 			case 4: // Ghost Gate
 				tempSprite = new sprite(8, 8, x * 8, y * 8, ghostWall, gameRenderer);
@@ -179,6 +202,7 @@ void game_state::populate_map()
 			}
 		}
 	}
+	logSystem->addLog("Map Loaded", 2);
 }
 
 void game_state::load_sprites()
@@ -189,7 +213,7 @@ void game_state::load_sprites()
 	tempSprite->yGridPos = 5;
 
 	player = tempSprite;
-	spriteList.push_back(player);
+	player->set_sfx(blipSfx);
 
 	ghost* tempGhost = new ghost(12, 12, 108, 88, powerup, gameRenderer);
 	spriteList.push_back(tempGhost);
@@ -200,6 +224,15 @@ void game_state::load_sprites()
 		ghost* tempGhost = new ghost(12, 12, 108/*94 + (x * 14)*/, 88/*118*/, powerup, gameRenderer);
 		spriteList.emplace_back(tempGhost);
 		ghostList.emplace_back(tempGhost);
+	}
+
+	if (player == NULL || spriteList.size() < 1 || ghostList.size() < 1)
+	{
+		logSystem->addLog("Sprites Not Loaded", 0);
+	}
+	else
+	{
+		logSystem->addLog("Sprites Loaded", 2);
 	}
 
 	lastTick = 0;
@@ -353,15 +386,12 @@ SDL_Surface* game_state::getWallSurface(int x, int y, int width)
 void game_state::update(double dt)
 {
 	currTick = SDL_GetTicks();
-	if (currTick == 3200)
+	if (currTick > 3200 && !mainMusicPlaying)
 	{
-		if (!mainMusicPlaying)
-		{
-			Mix_PlayMusic(mainMusic, -1);
-			mainMusicPlaying = true;
-		}
+		Mix_PlayMusic(mainMusic, -1);
+		mainMusicPlaying = true;
 	}
-	else if (currTick == 4000)
+	else if (currTick > 4000 && splashScreen->active)
 	{
 		splashScreen->active = false;
 		mainMenu->active = true;
@@ -405,36 +435,46 @@ void game_state::update(double dt)
 		gameEndTick = -1;
 		input = 0;
 		gameOver = false;
+		gameWon = false;
+		playerScore = 0;
+		logSystem->showScore(playerScore);
 	}
 	else if (!paused)
 	{
-		player->update(dt, spriteList[0], &mapGrid, currTick, input);
+		int tempScore = playerScore;
+		player->update(dt, &mapGrid, &pelletList, currTick, input, &playerScore);
+		if (playerScore != tempScore)
+		{
+			logSystem->showScore(playerScore);
+		}
+		if (playerScore == 24400)
+		{
+			game_won();
+		}
 
 		for (auto& elem : ghostList)
 		{
-			elem->update(dt, spriteList[0], &mapGrid, currTick);
+			elem->update(dt, &mapGrid, currTick);
 
 			if (checkCollision(player, elem))
 			{
-				SDL_Log("COLLISION");
+				logSystem->addLog("Player Death", 4);
 				playerDeath();
 				break;
-			}
-			else
-			{
-				//SDL_Log("NOTHING");
 			}
 		}
 	}
 	switch (mainMenuOutput)
 	{
 	case 0:
+		logSystem->addLog("Main Menu Closed", 4);
 		mainMenu->active = false;
 		load_new_game();
 		mainMenuOutput = -1;
 		break;
 	case 1:
 		// Show options menu
+		logSystem->addLog("Options Menu Opened", 4);
 		mainMenu->active = false;
 		optionsMenu->active = true;
 		switch (optionsOutput)
@@ -444,6 +484,7 @@ void game_state::update(double dt)
 			{
 				SDL_SetWindowFullscreen(gameWindow, SDL_WINDOW_FULLSCREEN_DESKTOP);
 				fullscreen = true;
+				logSystem->addLog("Fullscreen On", 4);
 				char* str = "Fullscreen - Active";
 				optionsMenu->items[0]->set_text(str);
 			}
@@ -451,6 +492,7 @@ void game_state::update(double dt)
 			{
 				SDL_SetWindowFullscreen(gameWindow, 0);
 				fullscreen = false;
+				logSystem->addLog("Fullscreen Off", 4);
 				char* str = "Fullscreen - Inactive";
 				optionsMenu->items[0]->set_text(str);
 			}
@@ -536,6 +578,7 @@ void game_state::playerDeath()
 
 void game_state::game_over()
 {
+	logSystem->addLog("Game Over", 4);
 	Mix_PlayChannel(-1, gameOverSfx, 0);
 	paused = true;
 	Mix_HaltMusic();
@@ -543,8 +586,18 @@ void game_state::game_over()
 	gameOver = true;
 }
 
+void game_state::game_won()
+{
+	logSystem->addLog("Game Won", 4);
+	paused = true;
+	Mix_HaltMusic();
+	gameEndTick = SDL_GetTicks();
+	gameWon = true;
+}
+
 void game_state::reset_sprites_pos()
 {
+	logSystem->addLog("Sprite Position Reset", 4);
 	player->xPos = 108;
 	player->yPos = 184;
 	player->input = 0;
@@ -597,12 +650,14 @@ void game_state::pause_game()
 {
 	if (!paused)
 	{
+		logSystem->addLog("Game Paused", 4);
 		paused = true;
 		pauseMenu->active = true;
 		Mix_PauseMusic();
 	}
 	else
 	{
+		logSystem->addLog("Game Unpaused", 4);
 		paused = false;
 		pauseMenu->active = false;
 		Mix_ResumeMusic();

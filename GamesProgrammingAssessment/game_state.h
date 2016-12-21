@@ -8,6 +8,7 @@
 #include "options_menu.h"
 #include "SDL_ttf.h"
 #include "SDL_mixer.h"
+#include "log_system.h"
 
 class game_state
 {
@@ -23,16 +24,20 @@ public:
 	void playerDeath();
 	void pause_game();
 	void game_over();
+	void game_won();
 	void reset_sprites_pos();
 
+	int playerScore;
+	log_system* logSystem;
 	int playerLives;
-	bool running, gameActive, fullscreen, gameOver;
+	bool running, gameActive, fullscreen, gameOver, gameWon;
 	SDL_GameController* gameController;
 	menu* pauseMenu;
 	menu* splashScreen;
 	menu_main* mainMenu;
 	options_menu* optionsMenu;
 	menu_item* gameOverText;
+	menu_item* gameWonText;
 	SDL_Surface* getWallSurface(int x, int y, int width);
 	int getArrPos(int i, int j, int width);
 	sprite* getSprite(int spriteId);
@@ -41,6 +46,7 @@ public:
 	std::vector<ghost*> ghostList;
 	SDL_Window* gameWindow;
 	SDL_Renderer* gameRenderer;
+	std::vector<sprite*> pelletList;
 	std::vector<sprite*> spriteList;
 	std::vector<int> mapGrid;
 	int mapWidth, mapHeight;

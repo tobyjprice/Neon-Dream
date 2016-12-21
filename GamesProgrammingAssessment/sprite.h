@@ -1,6 +1,7 @@
 #pragma once
 #include "SDL.h"
 #include <vector>
+#include "SDL_Mixer.h"
 
 class sprite
 {
@@ -8,10 +9,12 @@ public:
 	sprite();
 	sprite(int w, int h, double x, double y, SDL_Surface* inSurface, SDL_Renderer* renderer);
 	~sprite();
+	void set_sfx(Mix_Chunk* pelletDeathSfx);
 	SDL_Texture* getTexture();
 	SDL_Rect getRect();
 	double getXPos();
-	virtual void update(double deltaTime, sprite* collider, std::vector<int>* mapGrid, int tick, int input);
+	Mix_Chunk* pelletDeath;
+	virtual void update(double deltaTime, std::vector<int>* mapGrid, std::vector<sprite*>* pelletGrid, int tick, int input, int* score);
 	void move(double deltaTime);
 	void reset_sprite(int x, int y);
 	int checkRight(std::vector<int>& mapGrid);
@@ -30,6 +33,6 @@ public:
 protected:
 	SDL_Surface* surface;
 	SDL_Texture* texture;
-	
+	void hitPellet(std::vector<sprite*>* pelletList, int* score);
 };
 
