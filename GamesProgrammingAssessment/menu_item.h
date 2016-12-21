@@ -10,6 +10,9 @@ public:
 	~menu_item();
 	void set_highlight();
 	void set_default();
+	void set_text(char* inText);
+	void update_texture();
+	int value;
 	SDL_Renderer* renderer;
 	SDL_Surface* surface;
 	SDL_Texture* texture;

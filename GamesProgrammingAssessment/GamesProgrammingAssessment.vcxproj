@@ -89,15 +89,15 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(SolutionDir)\SDL2-2.0.5\include;$(SolutionDir)\SDL2_image-2.0.1\include;$(SolutionDir)\SDL2_ttf-2.0.14\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\SDL2-2.0.5\include;$(SolutionDir)\SDL2_image-2.0.1\include;$(SolutionDir)\SDL2_ttf-2.0.14\include;$(SolutionDir)\SDL2_mixer-2.0.1\include</AdditionalIncludeDirectories>
       <AdditionalUsingDirectories>
       </AdditionalUsingDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)\SDL2-2.0.5\lib\x86\;$(SolutionDir)\SDL2_image-2.0.1\lib\x86\;$(SolutionDir)\SDL2_ttf-2.0.14\lib\x86\</AdditionalLibraryDirectories>
-      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies);SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_ttf.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)\SDL2-2.0.5\lib\x86\;$(SolutionDir)\SDL2_image-2.0.1\lib\x86\;$(SolutionDir)\SDL2_ttf-2.0.14\lib\x86\;$(SolutionDir)\SDL2_mixer-2.0.1\lib\x86\</AdditionalLibraryDirectories>
+      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies);SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_ttf.lib;SDL2_mixer.lib</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -122,15 +122,15 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(SolutionDir)\SDL2-2.0.5\include;$(SolutionDir)\SDL2_image-2.0.1\include;$(SolutionDir)\SDL2_ttf-2.0.14\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\SDL2-2.0.5\include;$(SolutionDir)\SDL2_image-2.0.1\include;$(SolutionDir)\SDL2_ttf-2.0.14\include;$(SolutionDir)\SDL2_mixer-2.0.1\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)\SDL2-2.0.5\lib\x86\;$(SolutionDir)\SDL2_image-2.0.1\lib\x86\;$(SolutionDir)\SDL2_ttf-2.0.14\lib\x86\</AdditionalLibraryDirectories>
-      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies);SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_ttf.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)\SDL2-2.0.5\lib\x86\;$(SolutionDir)\SDL2_image-2.0.1\lib\x86\;$(SolutionDir)\SDL2_ttf-2.0.14\lib\x86\;$(SolutionDir)\SDL2_mixer-2.0.1\lib\x86\</AdditionalLibraryDirectories>
+      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies);SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_ttf.lib;SDL2_mixer.lib</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -158,6 +158,7 @@
     <ClCompile Include="menu.cpp" />
     <ClCompile Include="menu_item.cpp" />
     <ClCompile Include="menu_main.cpp" />
+    <ClCompile Include="options_menu.cpp" />
     <ClCompile Include="sprite.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -167,6 +168,7 @@
     <ClInclude Include="menu.h" />
     <ClInclude Include="menu_item.h" />
     <ClInclude Include="menu_main.h" />
+    <ClInclude Include="options_menu.h" />
     <ClInclude Include="sprite.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

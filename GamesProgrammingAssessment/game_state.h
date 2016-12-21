@@ -5,12 +5,14 @@
 #include "mapPoint.h"
 #include "menu.h"
 #include "menu_main.h"
+#include "options_menu.h"
 #include "SDL_ttf.h"
+#include "SDL_mixer.h"
 
 class game_state
 {
 public:
-	game_state(SDL_Renderer *renderer);
+	game_state(SDL_Window* window, SDL_Renderer *renderer);
 	~game_state();
 	void load_new_game();
 	void load_resources();
@@ -22,24 +24,38 @@ public:
 	void pause_game();
 	void game_over();
 	void reset_sprites_pos();
-	
+
+	int playerLives;
+	bool running, gameActive, fullscreen, gameOver;
+	SDL_GameController* gameController;
 	menu* pauseMenu;
 	menu* splashScreen;
 	menu_main* mainMenu;
-	bool showSplash, showMainMenu;
+	options_menu* optionsMenu;
+	menu_item* gameOverText;
 	SDL_Surface* getWallSurface(int x, int y, int width);
 	int getArrPos(int i, int j, int width);
 	sprite* getSprite(int spriteId);
 	bool game_state::checkCollision(sprite* one, sprite* two);
 	sprite* player;
 	std::vector<ghost*> ghostList;
+	SDL_Window* gameWindow;
 	SDL_Renderer* gameRenderer;
 	std::vector<sprite*> spriteList;
 	std::vector<int> mapGrid;
 	int mapWidth, mapHeight;
-	int currTick, lastTick;
-	int input, mainMenuOutput;
+	int currTick, lastTick, gameStartTick, gameEndTick;
+	int input, mainMenuOutput, optionsOutput;
 private:
+	Mix_Music* mainMusic;
+	Mix_Music* gameMusic;
+	Mix_Chunk* blipSfx;
+	Mix_Chunk* powerupSfx;
+	Mix_Chunk* powerupSfx2;
+	Mix_Chunk* loseSfx;
+	Mix_Chunk* gameOverSfx;
+	bool mainMusicPlaying;
+	int musicVolume;
 	SDL_Surface* playerSurface;
 	SDL_Surface* bottomLeft;
 	SDL_Surface* bottomRight;

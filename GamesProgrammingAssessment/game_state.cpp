@@ -5,18 +5,63 @@
 #include <fstream>
 #include "menu.h"
 #include "menu_main.h"
+#include "options_menu.h"
+#include "SDL_mixer.h"
 
-game_state::game_state(SDL_Renderer *renderer)
+game_state::game_state(SDL_Window* window, SDL_Renderer *renderer)
 {
 	gameRenderer = renderer;
+	gameWindow = window;
+	fullscreen = false;
 	mapGrid.reserve(28 * 31);
 	mapWidth = 28;
 	mapHeight = 31;
+
+	
+
 	pauseMenu = new menu(gameRenderer);
 	splashScreen = new menu(gameRenderer);
 	mainMenu = new menu_main(gameRenderer);
-	showSplash = true;
-	showMainMenu = false;
+	optionsMenu = new options_menu(gameRenderer);
+	gameOverText = new menu_item("Game Over", 118, 88, 100, 20, gameRenderer);
+	splashScreen->active = true;
+	mainMenu->active = false;
+	optionsMenu->active = false;
+	gameActive = false;
+	mainMenuOutput = -1;
+	optionsOutput = -1;
+	musicVolume = 20;
+	gameOver = false;
+
+	std::string volString = "Music Volume - ";
+	volString.append(std::to_string(musicVolume));
+
+	char* str = new char[volString.length() + 1];
+	std::strcpy(str, volString.c_str());
+
+	optionsMenu->items[1]->set_text(str);
+
+	load_resources();
+
+	// Initialises the gamepad/joystick, checks to see that at least one is connected
+	if (SDL_NumJoysticks() < 1)
+	{
+		SDL_Log("No Joysticks found");
+	}
+	else
+	{
+		gameController = SDL_GameControllerOpen(0);
+		if (gameController == NULL)
+		{
+			SDL_LogCritical(SDL_LOG_CATEGORY_APPLICATION,
+				"SDL_Init Error: %s\n", SDL_GetError());
+		}
+		else
+		{
+			SDL_Log("GameController: Initialised");
+		}
+
+	}
 }
 
 
@@ -26,15 +71,23 @@ game_state::~game_state()
 
 void game_state::load_new_game()
 {
+	gameEndTick = -1;
+	gameStartTick = SDL_GetTicks();
+	gameActive = false;
+	playerLives = 3;
 	paused = true;
-	load_resources();
+	spriteList.clear();
+	ghostList.clear();
 	load_map();
 	populate_map();
 	load_sprites();
+	Mix_HaltMusic();
+	Mix_PlayMusic(gameMusic, -1);
 }
 
 void game_state::load_resources()
 {
+	// Images
 	playerSurface = IMG_Load("resources//test.bmp");
 	bottomLeft = IMG_Load("resources//Bottom-Left-Corner.png");
 	bottomRight = IMG_Load("resources//Bottom-Right-Corner.png");
@@ -51,6 +104,25 @@ void game_state::load_resources()
 	ghostWall = IMG_Load("resources//Ghost-Wall.png");
 	pellet = IMG_Load("resources//Pellet.png");
 	powerup = IMG_Load("resources//powerup.png");
+
+	// Sounds
+	//Initialise SDL_mixer
+	if (Mix_OpenAudio(11025, MIX_DEFAULT_FORMAT, 2, 512) == -1)
+	{
+		SDL_LogCritical(SDL_LOG_CATEGORY_APPLICATION,
+			"SDL_Init Error: %s\n", SDL_GetError());
+	}
+
+	mainMusic = Mix_LoadMUS("resources//Sounds//DieHistoric.wav");
+	gameMusic = Mix_LoadMUS("resources//Sounds//HotNights.wav");
+	Mix_VolumeMusic(musicVolume);
+	mainMusicPlaying = false;
+
+	blipSfx = Mix_LoadWAV("resources//Sounds//blip.wav");
+	powerupSfx = Mix_LoadWAV("resources//Sounds//powerup.wav");
+	powerupSfx2 = Mix_LoadWAV("resources//Sounds//powerup2.wav");
+	loseSfx = Mix_LoadWAV("resources//Sounds//lose.wav");
+	gameOverSfx = Mix_LoadWAV("resources//Sounds//gameover.wav");
 }
 
 void game_state::load_map()
@@ -280,19 +352,61 @@ SDL_Surface* game_state::getWallSurface(int x, int y, int width)
 
 void game_state::update(double dt)
 {
-	mainMenuOutput = -1;
 	currTick = SDL_GetTicks();
-	if (currTick == 5000)
+	if (currTick == 3200)
 	{
-		showSplash = false;
-		showMainMenu = true;
+		if (!mainMusicPlaying)
+		{
+			Mix_PlayMusic(mainMusic, -1);
+			mainMusicPlaying = true;
+		}
 	}
-	if (showMainMenu)
+	else if (currTick == 4000)
+	{
+		splashScreen->active = false;
+		mainMenu->active = true;
+	}
+	
+	if (mainMenu->active)
 	{
 		mainMenu->update(input, &mainMenuOutput);
 		input = 0;
 	}
-	if (!paused)
+	else if (optionsMenu->active)
+	{
+		optionsMenu->update(input, &optionsOutput);
+		if (input == 6)
+		{
+			optionsMenu->active = false;
+			mainMenu->active = true;
+			mainMenuOutput = -1;
+		}
+		input = 0;
+	}
+	else if (input == 6 && !splashScreen->active)
+	{
+		pause_game();
+		input = 0;
+	}
+	
+	if (gameStartTick > 0 && currTick - gameStartTick > 3000 && !gameActive)
+	{
+		paused = false;
+		gameActive = true;
+	}
+	// Game over screen
+	if (gameEndTick > 0 && currTick - gameEndTick > 3000)
+	{
+		mainMenu->active = true;
+		mainMenu->selItem = 0;
+		ghostList.clear();
+		spriteList.clear();
+		Mix_PlayMusic(mainMusic, -1);
+		gameEndTick = -1;
+		input = 0;
+		gameOver = false;
+	}
+	else if (!paused)
 	{
 		player->update(dt, spriteList[0], &mapGrid, currTick, input);
 
@@ -304,9 +418,6 @@ void game_state::update(double dt)
 			{
 				SDL_Log("COLLISION");
 				playerDeath();
-				//load_new_game();
-
-				//game_over();
 				break;
 			}
 			else
@@ -318,11 +429,72 @@ void game_state::update(double dt)
 	switch (mainMenuOutput)
 	{
 	case 0:
-		showMainMenu = false;
-		//load_new_game();
+		mainMenu->active = false;
+		load_new_game();
+		mainMenuOutput = -1;
+		break;
+	case 1:
+		// Show options menu
+		mainMenu->active = false;
+		optionsMenu->active = true;
+		switch (optionsOutput)
+		{
+		case 0:
+			if (!fullscreen) 
+			{
+				SDL_SetWindowFullscreen(gameWindow, SDL_WINDOW_FULLSCREEN_DESKTOP);
+				fullscreen = true;
+				char* str = "Fullscreen - Active";
+				optionsMenu->items[0]->set_text(str);
+			}
+			else
+			{
+				SDL_SetWindowFullscreen(gameWindow, 0);
+				fullscreen = false;
+				char* str = "Fullscreen - Inactive";
+				optionsMenu->items[0]->set_text(str);
+			}
+			break;
+		case 1:
+			if (musicVolume == 100)
+			{
+				musicVolume = 0;
+				Mix_VolumeMusic(musicVolume);
+
+				std::string volString = "Music Volume - ";
+				volString.append(std::to_string(musicVolume));
+
+				char* str = new char[volString.length() + 1];
+				std::strcpy(str, volString.c_str());
+
+				optionsMenu->items[1]->set_text(str);
+			}
+			else
+			{
+				musicVolume++;
+				Mix_VolumeMusic(musicVolume);
+
+				std::string volString = "Music Volume - ";
+				volString.append(std::to_string(musicVolume));
+
+				char* str = new char[volString.length() + 1];
+				std::strcpy(str, volString.c_str());
+
+				optionsMenu->items[1]->set_text(str);
+			}
+			break;
+		case 2:
+			optionsMenu->active = false;
+			mainMenu->active = true;
+			mainMenuOutput = -1;
+			break;
+		default:
+			break;
+		}
+		optionsOutput = -1;
 		break;
 	case 2:
-		// running = false
+		running = false;
 		break;
 	default:
 		break;
@@ -345,15 +517,30 @@ bool game_state::checkCollision(sprite* one, sprite* two)
 
 void game_state::playerDeath()
 {
-	//paused = true;
-	reset_sprites_pos();
+	if (playerLives > 1)
+	{
+		Mix_PlayChannel(-1, loseSfx, 0);
+		Mix_PlayMusic(gameMusic, -1);
+		paused = true;
+		reset_sprites_pos();
+		gameStartTick = SDL_GetTicks();
+		gameActive = false;
+	}
+	else
+	{
+		Mix_PlayChannel(-1, loseSfx, 0);
+		game_over();
+	}
+	playerLives--;
 }
 
 void game_state::game_over()
 {
-	ghostList.clear();
-	spriteList.clear();
-	load_new_game();
+	Mix_PlayChannel(-1, gameOverSfx, 0);
+	paused = true;
+	Mix_HaltMusic();
+	gameEndTick = SDL_GetTicks();
+	gameOver = true;
 }
 
 void game_state::reset_sprites_pos()
@@ -412,11 +599,13 @@ void game_state::pause_game()
 	{
 		paused = true;
 		pauseMenu->active = true;
+		Mix_PauseMusic();
 	}
 	else
 	{
 		paused = false;
 		pauseMenu->active = false;
+		Mix_ResumeMusic();
 	}
 }
 

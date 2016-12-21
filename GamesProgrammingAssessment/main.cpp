@@ -6,8 +6,8 @@
 #include <chrono>
 
 static void process_input(bool* running, SDL_Window&, game_state* game);
-static void update(game_state* game, double deltaTime, sprite* temp);
-static void render(game_state& game, sprite* temp);
+static void update(game_state* game, double deltaTime);
+static void render(game_state& game);
 
 int main(int argc, char* argv[])
 {
@@ -23,21 +23,19 @@ int main(int argc, char* argv[])
 
 	SDL_Window* window = SDL_CreateWindow("Toby Price - 13480955", display.w / 4, display.h / 4, display.w / 2, display.h / 2, SDL_WINDOW_RESIZABLE);
 	SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, NULL);
-	game_state game(renderer);
+	game_state game(window, renderer);
 
 	SDL_RenderSetLogicalSize(game.gameRenderer, 224, 278);
 	
-	game.load_new_game();
+	//game.load_resources();
 
-	sprite* tempSprite = new sprite(1, 1, game.spriteList[0]->xPos + game.spriteList[0]->xAnchor, game.spriteList[0]->yPos + game.spriteList[0]->yAnchor, SDL_LoadBMP("resources//test2.bmp"), game.gameRenderer);
-
-	bool running = true;
+	game.running = true;
 	std::chrono::high_resolution_clock::time_point prevTime = std::chrono::high_resolution_clock::now();
 	double acc = 0.0;
 	double dt = 0.00025;
 	double t = 0.0;
 
-	while (running)
+	while (game.running)
 	{
 		auto currTime = std::chrono::high_resolution_clock::now();
 		auto deltaTime = std::chrono::duration_cast<std::chrono::nanoseconds>(currTime - prevTime);
@@ -49,15 +47,15 @@ int main(int argc, char* argv[])
 
 		while (acc >= dt)
 		{
-			update(&game, dt, tempSprite);
+			update(&game, dt);
 			acc -= dt;
 			t += dt;
 		}
 
-		process_input(&running, *window, &game);
-		render(game, tempSprite);
+		process_input(&game.running, *window, &game);
+		render(game);
 
-		std::cout << 1 / frameTimeSec << std::endl;
+		//std::cout << 1 / frameTimeSec << std::endl;
 		//std::cout << temp->xVel << " " << temp->yVel << " " << temp->direction << temp->yPos << std::endl;
 	}
 
@@ -68,6 +66,11 @@ void process_input(bool* running, SDL_Window &window, game_state* game)
 {
 	SDL_Event event;
 
+	if (SDL_NumJoysticks() < 1)
+	{
+		printf("NO JOYSTICK");
+	}
+
 	while (SDL_PollEvent(&event))
 	{
 		switch (event.type)
@@ -76,7 +79,8 @@ void process_input(bool* running, SDL_Window &window, game_state* game)
 			switch (event.key.keysym.sym)
 			{
 			case SDLK_ESCAPE:
-				game->pause_game();
+				SDL_Log("Key Esc pressed");
+				game->input = 6;
 				break;
 			case SDLK_w:
 				SDL_Log("Key w pressed");
@@ -105,33 +109,70 @@ void process_input(bool* running, SDL_Window &window, game_state* game)
 		case SDL_QUIT:
 			*running = false;
 			break;
+		case SDL_CONTROLLERBUTTONDOWN:
+			switch (event.cbutton.button)
+			{
+			case SDL_CONTROLLER_BUTTON_DPAD_UP:
+				SDL_Log("DPAD UP");
+				game->input = 1;
+				break;
+			case SDL_CONTROLLER_BUTTON_DPAD_LEFT:
+				SDL_Log("DPAD LEFT");
+				game->input = 2;
+				break;
+			case SDL_CONTROLLER_BUTTON_DPAD_DOWN:
+				SDL_Log("DPAD DOWN");
+				game->input = 3;
+				break;
+			case SDL_CONTROLLER_BUTTON_DPAD_RIGHT:
+				SDL_Log("DPAD RIGHT");
+				game->input = 4;
+				break;
+			case SDL_CONTROLLER_BUTTON_A:
+				SDL_Log("A Button");
+				game->input = 5;
+				break;
+			case SDL_CONTROLLER_BUTTON_START:
+				SDL_Log("Start Button");
+				game->input = 6;
+				break;
+			default:
+				break;
+			}
 		default:
 			break;
 		}
 	}
 }
 
-void update(game_state* game, double deltaTime, sprite* temp)
+void update(game_state* game, double deltaTime)
 {
 	game->update(deltaTime);
 }
 
-void render(game_state& game, sprite* temp)
+void render(game_state& game)
 {
 	SDL_SetRenderDrawColor(game.gameRenderer, 0, 0, 0, 255);
 	SDL_RenderClear(game.gameRenderer);
 	
-	if (game.showSplash)
+	if (game.splashScreen->active)
 	{
 		SDL_RenderCopy(game.gameRenderer, game.splashScreen->items[0]->texture, NULL, &game.splashScreen->items[0]->rect);
 	}
-	else if (game.showMainMenu)
+	else if (game.mainMenu->active)
 	{
 		for (auto& item : game.mainMenu->items)
 		{
 			SDL_RenderCopy(game.gameRenderer, item->texture, NULL, &item->rect);
 		}
 		
+	}
+	else if (game.optionsMenu->active)
+	{
+		for (auto& item : game.optionsMenu->items)
+		{
+			SDL_RenderCopy(game.gameRenderer, item->texture, NULL, &item->rect);
+		}
 	}
 	else 
 	{
@@ -147,6 +188,9 @@ void render(game_state& game, sprite* temp)
 			}
 		}
 	}
-	SDL_RenderCopy(game.gameRenderer, temp->getTexture(), NULL, &temp->getRect());
+	if (game.gameOver)
+	{
+		SDL_RenderCopy(game.gameRenderer, game.gameOverText->texture, NULL, &game.gameOverText->rect);
+	}
 	SDL_RenderPresent(game.gameRenderer);
 }

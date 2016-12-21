@@ -9,6 +9,7 @@ menu_item::menu_item(char* inText, int x, int y, int w, int h, SDL_Renderer* inR
 	text = inText;
 	renderer = inRenderer;
 	defColor = { 255, 255, 255 };
+	value = 0;
 
 	if (TTF_Init() == -1)
 	{
@@ -18,13 +19,7 @@ menu_item::menu_item(char* inText, int x, int y, int w, int h, SDL_Renderer* inR
 
 	font = TTF_OpenFont("C://Users//Toby//Documents//University//Games-Programming-Assessment//GamesProgrammingAssessment//resources//true-crimes.ttf", 28);
 
-	surface = TTF_RenderText_Solid(font, text, defColor);
-	defTexture = SDL_CreateTextureFromSurface(renderer, surface);
-
-	surface = TTF_RenderText_Solid(font, text, {100,0,100});
-	highTexture = SDL_CreateTextureFromSurface(renderer, surface);
-
-	texture = defTexture;
+	update_texture();
 }
 
 void menu_item::set_highlight()
@@ -35,6 +30,23 @@ void menu_item::set_highlight()
 void menu_item::set_default()
 {
 	texture = defTexture;
+}
+
+void menu_item::update_texture()
+{
+	surface = TTF_RenderText_Solid(font, text, defColor);
+	defTexture = SDL_CreateTextureFromSurface(renderer, surface);
+
+	surface = TTF_RenderText_Solid(font, text, { 100,0,100 });
+	highTexture = SDL_CreateTextureFromSurface(renderer, surface);
+
+	texture = defTexture;
+}
+
+void menu_item::set_text(char* inText)
+{
+	text = inText;
+	update_texture();
 }
 
 menu_item::~menu_item()
