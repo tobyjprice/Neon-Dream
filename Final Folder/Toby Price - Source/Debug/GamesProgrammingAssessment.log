@@ -1,0 +1,3 @@
+﻿  main.cpp
+c:\users\toby\documents\university\games-programming-assessment\gamesprogrammingassessment\main.cpp(42): warning C4244: 'initializing': conversion from '__int64' to 'double', possible loss of data
+  GamesProgrammingAssessment.vcxproj -> C:\Users\Toby\Documents\University\Games-Programming-Assessment\GamesProgrammingAssessment\Debug\GamesProgrammingAssessment.exe
