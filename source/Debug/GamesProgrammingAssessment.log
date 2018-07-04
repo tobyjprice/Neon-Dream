@@ -1,73 +1,72 @@
-﻿  sprite.cpp
-c:\users\computing\desktop\neon-dream\final folder\toby price - source\sprite.cpp(24): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-c:\users\computing\desktop\neon-dream\final folder\toby price - source\sprite.cpp(25): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-c:\users\computing\desktop\neon-dream\final folder\toby price - source\sprite.cpp(27): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-c:\users\computing\desktop\neon-dream\final folder\toby price - source\sprite.cpp(28): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-c:\users\computing\desktop\neon-dream\final folder\toby price - source\sprite.cpp(29): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-c:\users\computing\desktop\neon-dream\final folder\toby price - source\sprite.cpp(30): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-c:\users\computing\desktop\neon-dream\final folder\toby price - source\sprite.cpp(37): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-c:\users\computing\desktop\neon-dream\final folder\toby price - source\sprite.cpp(38): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-c:\users\computing\desktop\neon-dream\final folder\toby price - source\sprite.cpp(204): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-c:\users\computing\desktop\neon-dream\final folder\toby price - source\sprite.cpp(205): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-c:\users\computing\desktop\neon-dream\final folder\toby price - source\sprite.cpp(210): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-c:\users\computing\desktop\neon-dream\final folder\toby price - source\sprite.cpp(211): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-c:\users\computing\desktop\neon-dream\final folder\toby price - source\sprite.cpp(233): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-c:\users\computing\desktop\neon-dream\final folder\toby price - source\sprite.cpp(234): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-c:\users\computing\desktop\neon-dream\final folder\toby price - source\sprite.cpp(235): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-c:\users\computing\desktop\neon-dream\final folder\toby price - source\sprite.cpp(236): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-c:\users\computing\desktop\neon-dream\final folder\toby price - source\sprite.cpp(281): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-c:\users\computing\desktop\neon-dream\final folder\toby price - source\sprite.cpp(282): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-c:\users\computing\desktop\neon-dream\final folder\toby price - source\sprite.cpp(284): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-c:\users\computing\desktop\neon-dream\final folder\toby price - source\sprite.cpp(285): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-c:\users\computing\desktop\neon-dream\final folder\toby price - source\sprite.cpp(289): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-c:\users\computing\desktop\neon-dream\final folder\toby price - source\sprite.cpp(290): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-  options_menu.cpp
-  menu_main.cpp
-  menu_item.cpp
-  menu.cpp
-  mapPoint.cpp
-  main.cpp
-c:\users\computing\desktop\neon-dream\final folder\toby price - source\main.cpp(42): warning C4244: 'initializing': conversion from '__int64' to 'double', possible loss of data
-  log_system.cpp
-c:\users\computing\desktop\neon-dream\final folder\toby price - source\log_system.cpp(29): warning C4996: 'ctime': This function or variable may be unsafe. Consider using ctime_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\time.h(475): note: see declaration of 'ctime'
-c:\users\computing\desktop\neon-dream\final folder\toby price - source\log_system.cpp(34): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(119): note: see declaration of 'strcpy'
-c:\users\computing\desktop\neon-dream\final folder\toby price - source\log_system.cpp(64): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(119): note: see declaration of 'strcpy'
-c:\users\computing\desktop\neon-dream\final folder\toby price - source\log_system.cpp(79): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(119): note: see declaration of 'strcpy'
-  log_item.cpp
+﻿  game_state.cpp
+c:\users\tobyj\documents\portfolio\neon-dream\source\game_state.cpp(52): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.16299.0\ucrt\string.h(132): note: see declaration of 'strcpy'
+c:\users\tobyj\documents\portfolio\neon-dream\source\game_state.cpp(535): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.16299.0\ucrt\string.h(132): note: see declaration of 'strcpy'
+c:\users\tobyj\documents\portfolio\neon-dream\source\game_state.cpp(548): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.16299.0\ucrt\string.h(132): note: see declaration of 'strcpy'
+c:\users\tobyj\documents\portfolio\neon-dream\source\game_state.cpp(637): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\users\tobyj\documents\portfolio\neon-dream\source\game_state.cpp(638): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\users\tobyj\documents\portfolio\neon-dream\source\game_state.cpp(640): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\users\tobyj\documents\portfolio\neon-dream\source\game_state.cpp(641): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\users\tobyj\documents\portfolio\neon-dream\source\game_state.cpp(645): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\users\tobyj\documents\portfolio\neon-dream\source\game_state.cpp(646): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\users\tobyj\documents\portfolio\neon-dream\source\game_state.cpp(661): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\users\tobyj\documents\portfolio\neon-dream\source\game_state.cpp(662): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\users\tobyj\documents\portfolio\neon-dream\source\game_state.cpp(664): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\users\tobyj\documents\portfolio\neon-dream\source\game_state.cpp(665): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\users\tobyj\documents\portfolio\neon-dream\source\game_state.cpp(669): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\users\tobyj\documents\portfolio\neon-dream\source\game_state.cpp(670): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
   ghost.cpp
-c:\users\computing\desktop\neon-dream\final folder\toby price - source\ghost.cpp(28): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-c:\users\computing\desktop\neon-dream\final folder\toby price - source\ghost.cpp(29): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-c:\users\computing\desktop\neon-dream\final folder\toby price - source\ghost.cpp(31): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-c:\users\computing\desktop\neon-dream\final folder\toby price - source\ghost.cpp(32): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-c:\users\computing\desktop\neon-dream\final folder\toby price - source\ghost.cpp(33): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-c:\users\computing\desktop\neon-dream\final folder\toby price - source\ghost.cpp(34): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-c:\users\computing\desktop\neon-dream\final folder\toby price - source\ghost.cpp(36): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-c:\users\computing\desktop\neon-dream\final folder\toby price - source\ghost.cpp(37): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-c:\users\computing\desktop\neon-dream\final folder\toby price - source\ghost.cpp(41): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-c:\users\computing\desktop\neon-dream\final folder\toby price - source\ghost.cpp(42): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-  game_state.cpp
-c:\users\computing\desktop\neon-dream\final folder\toby price - source\game_state.cpp(52): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(119): note: see declaration of 'strcpy'
-c:\users\computing\desktop\neon-dream\final folder\toby price - source\game_state.cpp(535): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(119): note: see declaration of 'strcpy'
-c:\users\computing\desktop\neon-dream\final folder\toby price - source\game_state.cpp(548): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(119): note: see declaration of 'strcpy'
-c:\users\computing\desktop\neon-dream\final folder\toby price - source\game_state.cpp(637): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-c:\users\computing\desktop\neon-dream\final folder\toby price - source\game_state.cpp(638): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-c:\users\computing\desktop\neon-dream\final folder\toby price - source\game_state.cpp(640): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-c:\users\computing\desktop\neon-dream\final folder\toby price - source\game_state.cpp(641): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-c:\users\computing\desktop\neon-dream\final folder\toby price - source\game_state.cpp(645): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-c:\users\computing\desktop\neon-dream\final folder\toby price - source\game_state.cpp(646): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-c:\users\computing\desktop\neon-dream\final folder\toby price - source\game_state.cpp(661): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-c:\users\computing\desktop\neon-dream\final folder\toby price - source\game_state.cpp(662): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-c:\users\computing\desktop\neon-dream\final folder\toby price - source\game_state.cpp(664): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-c:\users\computing\desktop\neon-dream\final folder\toby price - source\game_state.cpp(665): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-c:\users\computing\desktop\neon-dream\final folder\toby price - source\game_state.cpp(669): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-c:\users\computing\desktop\neon-dream\final folder\toby price - source\game_state.cpp(670): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\users\tobyj\documents\portfolio\neon-dream\source\ghost.cpp(28): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\users\tobyj\documents\portfolio\neon-dream\source\ghost.cpp(29): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\users\tobyj\documents\portfolio\neon-dream\source\ghost.cpp(31): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\users\tobyj\documents\portfolio\neon-dream\source\ghost.cpp(32): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\users\tobyj\documents\portfolio\neon-dream\source\ghost.cpp(33): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\users\tobyj\documents\portfolio\neon-dream\source\ghost.cpp(34): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\users\tobyj\documents\portfolio\neon-dream\source\ghost.cpp(36): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\users\tobyj\documents\portfolio\neon-dream\source\ghost.cpp(37): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\users\tobyj\documents\portfolio\neon-dream\source\ghost.cpp(41): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\users\tobyj\documents\portfolio\neon-dream\source\ghost.cpp(42): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+  log_item.cpp
+  log_system.cpp
+c:\users\tobyj\documents\portfolio\neon-dream\source\log_system.cpp(29): warning C4996: 'ctime': This function or variable may be unsafe. Consider using ctime_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.16299.0\ucrt\time.h(475): note: see declaration of 'ctime'
+c:\users\tobyj\documents\portfolio\neon-dream\source\log_system.cpp(34): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.16299.0\ucrt\string.h(132): note: see declaration of 'strcpy'
+c:\users\tobyj\documents\portfolio\neon-dream\source\log_system.cpp(64): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.16299.0\ucrt\string.h(132): note: see declaration of 'strcpy'
+c:\users\tobyj\documents\portfolio\neon-dream\source\log_system.cpp(79): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.16299.0\ucrt\string.h(132): note: see declaration of 'strcpy'
+  main.cpp
+c:\users\tobyj\documents\portfolio\neon-dream\source\main.cpp(42): warning C4244: 'initializing': conversion from '__int64' to 'double', possible loss of data
+  mapPoint.cpp
+  menu.cpp
+  menu_item.cpp
+  menu_main.cpp
+  options_menu.cpp
+  sprite.cpp
+c:\users\tobyj\documents\portfolio\neon-dream\source\sprite.cpp(24): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\users\tobyj\documents\portfolio\neon-dream\source\sprite.cpp(25): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\users\tobyj\documents\portfolio\neon-dream\source\sprite.cpp(27): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\users\tobyj\documents\portfolio\neon-dream\source\sprite.cpp(28): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\users\tobyj\documents\portfolio\neon-dream\source\sprite.cpp(29): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\users\tobyj\documents\portfolio\neon-dream\source\sprite.cpp(30): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\users\tobyj\documents\portfolio\neon-dream\source\sprite.cpp(37): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\users\tobyj\documents\portfolio\neon-dream\source\sprite.cpp(38): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\users\tobyj\documents\portfolio\neon-dream\source\sprite.cpp(204): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\users\tobyj\documents\portfolio\neon-dream\source\sprite.cpp(205): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\users\tobyj\documents\portfolio\neon-dream\source\sprite.cpp(210): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\users\tobyj\documents\portfolio\neon-dream\source\sprite.cpp(211): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\users\tobyj\documents\portfolio\neon-dream\source\sprite.cpp(233): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\users\tobyj\documents\portfolio\neon-dream\source\sprite.cpp(234): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\users\tobyj\documents\portfolio\neon-dream\source\sprite.cpp(235): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\users\tobyj\documents\portfolio\neon-dream\source\sprite.cpp(236): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\users\tobyj\documents\portfolio\neon-dream\source\sprite.cpp(281): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\users\tobyj\documents\portfolio\neon-dream\source\sprite.cpp(282): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\users\tobyj\documents\portfolio\neon-dream\source\sprite.cpp(284): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\users\tobyj\documents\portfolio\neon-dream\source\sprite.cpp(285): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\users\tobyj\documents\portfolio\neon-dream\source\sprite.cpp(289): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\users\tobyj\documents\portfolio\neon-dream\source\sprite.cpp(290): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
   Generating Code...
-  GamesProgrammingAssessment.vcxproj -> C:\Users\Computing\Desktop\Neon-Dream\Final Folder\Toby Price - Source\Debug\GamesProgrammingAssessment.exe
-  GamesProgrammingAssessment.vcxproj -> C:\Users\Computing\Desktop\Neon-Dream\Final Folder\Toby Price - Source\Debug\GamesProgrammingAssessment.pdb (Full PDB)
+  GamesProgrammingAssessment.vcxproj -> C:\Users\tobyj\Documents\Portfolio\Neon-Dream\source\Debug\GamesProgrammingAssessment.exe

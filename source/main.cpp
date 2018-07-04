@@ -4,6 +4,7 @@
 #include "game_state.h"
 #include "menu.h"
 #include "log_system.h"
+#include "input.h"
 #include <chrono>
 
 static void process_input(bool* running, SDL_Window&, game_state* game);
@@ -27,6 +28,8 @@ int main(int argc, char* argv[])
 	game_state game(window, renderer);
 
 	SDL_RenderSetLogicalSize(game.gameRenderer, 224, 278);
+
+	int* input = 0;
 
 	game.running = true;
 	std::chrono::high_resolution_clock::time_point prevTime = std::chrono::high_resolution_clock::now();
@@ -72,6 +75,27 @@ int main(int argc, char* argv[])
 void process_input(bool* running, SDL_Window &window, game_state* game)
 {
 	SDL_Event event;
+
+	while (SDL_PollEvent(&event))
+	{
+		switch (event.type)
+		{
+		case SDL_KEYDOWN:
+			if (game->gameActive)
+			{
+				game->input = event.key.keysym.sym;
+			}
+			/*else if (ui->active)
+			{
+				ui->input = event.key.keysym.sym;
+			}*/
+			break;
+		default:
+			break;
+		}
+	}
+
+	/*SDL_Event event;
 
 	while (SDL_PollEvent(&event))
 	{
@@ -163,7 +187,7 @@ void process_input(bool* running, SDL_Window &window, game_state* game)
 		default:
 			break;
 		}
-	}
+	}*/
 }
 
 void update(game_state* game, double deltaTime)
