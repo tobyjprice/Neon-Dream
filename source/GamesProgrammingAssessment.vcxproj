@@ -165,6 +165,7 @@
     <ClCompile Include="sprite.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Directions.h" />
     <ClInclude Include="game_state.h" />
     <ClInclude Include="ghost.h" />
     <ClInclude Include="input.h" />

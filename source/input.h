@@ -1,12 +1,14 @@
 #pragma once
 #include "SDL.h"
+#include "Directions.h"
 
-class input
+class Input
 {
 public:
-	input();
-	~input();
+	Input();
+	~Input();
 	void process_input(SDL_Keycode * inKey);
-
+	
+	int input;
 };
 
