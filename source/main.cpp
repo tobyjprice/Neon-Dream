@@ -7,7 +7,7 @@
 #include "input.h"
 #include <chrono>
 
-static void process_input(bool* running, SDL_Window&, game_state* game);
+static void process_input(bool* running, SDL_Window&, game_state* game, Input* input);
 static void update(game_state* game, double deltaTime);
 static void render(game_state& game);
 
@@ -26,6 +26,7 @@ int main(int argc, char* argv[])
 	SDL_Window* window = SDL_CreateWindow("Toby Price - 13480955", display.w / 4, display.h / 4, display.w / 2, display.h / 2, SDL_WINDOW_RESIZABLE);
 	SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, NULL);
 	game_state game(window, renderer);
+	Input inputManager;
 
 	SDL_RenderSetLogicalSize(game.gameRenderer, 224, 278);
 
@@ -55,7 +56,7 @@ int main(int argc, char* argv[])
 			t += dt;
 		}
 
-		process_input(&game.running, *window, &game);
+		process_input(&game.running, *window, &game, &inputManager);
 		render(game);
 
 		if (x > 100)
@@ -72,7 +73,7 @@ int main(int argc, char* argv[])
 	return 0;
 }
 
-void process_input(bool* running, SDL_Window &window, game_state* game)
+void process_input(bool* running, SDL_Window &window, game_state* game, Input* input)
 {
 	SDL_Event event;
 
@@ -81,14 +82,7 @@ void process_input(bool* running, SDL_Window &window, game_state* game)
 		switch (event.type)
 		{
 		case SDL_KEYDOWN:
-			if (game->gameActive)
-			{
-				game->input = event.key.keysym.sym;
-			}
-			/*else if (ui->active)
-			{
-				ui->input = event.key.keysym.sym;
-			}*/
+			input->process_input(&event.key.keysym.sym);
 			break;
 		default:
 			break;
