@@ -7,7 +7,7 @@ class sprite
 {
 public:
 	sprite();
-	sprite(int w, int h, double x, double y, SDL_Surface* inSurface, SDL_Surface* inSurface2, SDL_Surface* inSurface3, SDL_Renderer* renderer);
+	sprite(int w, int h, double x, double y, SDL_Surface* inSurface, SDL_Surface* inSurface2, SDL_Surface* inSurface3, SDL_Renderer* renderer, std::vector<int>* inMapGrid);
 	~sprite();
 	void set_sfx(Mix_Chunk* pelletDeathSfx);
 	void animate();
@@ -15,7 +15,9 @@ public:
 	SDL_Rect getRect();
 	double getXPos();
 	Mix_Chunk* pelletDeath;
-	virtual void update(double deltaTime, std::vector<int>* mapGrid, std::vector<sprite*>* pelletGrid, int tick, int input, int* score);
+	virtual void update(double deltaTime, std::vector<sprite*>* pelletGrid, int tick, int input, int* score);
+	void set_velocity();
+	void set_direction(int input, std::vector<int>* mapGrid);
 	void move(double deltaTime);
 	void reset_sprite(int x, int y);
 	int checkRight(std::vector<int>& mapGrid);
@@ -35,6 +37,7 @@ public:
 	bool moveUp, moveDown, moveLeft, moveRight;
 	SDL_Rect rect;
 	int animFrame;
+	std::vector<int>* mapGrid;
 protected:
 	SDL_Surface* surface;
 	SDL_Surface* surface2;

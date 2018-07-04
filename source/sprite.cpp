@@ -2,7 +2,7 @@
 #include <iostream>
 //#include <vector>
 
-sprite::sprite(int w, int h, double x, double y, SDL_Surface* inSurface, SDL_Surface* inSurface2, SDL_Surface* inSurface3, SDL_Renderer* inRenderer)
+sprite::sprite(int w, int h, double x, double y, SDL_Surface* inSurface, SDL_Surface* inSurface2, SDL_Surface* inSurface3, SDL_Renderer* inRenderer, std::vector<int>* inMapGrid)
 {
 	speed = 80;
 	boostVal = 20;
@@ -41,6 +41,8 @@ sprite::sprite(int w, int h, double x, double y, SDL_Surface* inSurface, SDL_Sur
 	surface2 = inSurface2;
 	surface3 = inSurface3;
 	texture = SDL_CreateTextureFromSurface(renderer, surface);
+
+	mapGrid = inMapGrid;
 }
 
 sprite::sprite()
@@ -57,57 +59,25 @@ void sprite::set_sfx(Mix_Chunk* pelletDeathSfx)
 	pelletDeath = pelletDeathSfx;
 }
 
-void sprite::update(double dt, std::vector<int>* mapGrid, std::vector<sprite*>* pelletGrid, int tick, int input, int* score)
+void sprite::update(double dt, std::vector<sprite*>* pelletGrid, int tick, int input, int* score)
 {
-	switch (input)
-	{
-	case 1:
-		if (checkUp(*mapGrid) != 1 && checkUp(*mapGrid) != 4)
-		{
-			if (xPosInt >= xGridPos * 8 && xPosInt + 8 <= (xGridPos * 8) + 8)
-			{
-				direction = input;
-			}
-		}
-		break;
-	case 2:
-		if (checkLeft(*mapGrid) != 1 && checkLeft(*mapGrid) != 4)
-		{
-			if (yPosInt >= yGridPos * 8 && yPosInt + 8 <= (yGridPos * 8) + 8)
-			{
-				direction = input;
-			}
-		}
-		break;
-	case 3:
-		if (checkDown(*mapGrid) != 1 && checkDown(*mapGrid) != 4)
-		{
-			if (xPosInt >= xGridPos * 8 && xPosInt + 8 <= (xGridPos * 8) + 8)
-			{
-				direction = input;
-			}
-		}
-		break;
-	case 4:
-		if (checkRight(*mapGrid) != 1 && checkRight(*mapGrid) != 4)
-		{
-			if (yPosInt >= yGridPos * 8 && yPosInt + 8 <= (yGridPos * 8) + 8)
-			{
-				direction = input;
-			}
-			
-		}
-		break;
-	case 5:
-		if (speed == 80)
-		{
-			speed = 160;
-		}
-		break;
-	default:
-		break;
-	}
+	set_direction(input, mapGrid);
+	set_velocity();
 
+	hitPellet(pelletGrid, score);
+
+	//std::cout << xAnchor << " " << yAnchor << std::endl;
+	//std::cout << xGridPos << " " << yGridPos << std::endl;
+
+	move(dt);
+
+	//std::cout << "   " << mapGrid[getArrPos(yGridPos, xGridPos - 1)] << std::endl;
+	//std::cout << mapGrid[getArrPos(yGridPos - 1, yGridPos)] << " " << yGridPos << " " << xGridPos << " " << mapGrid[getArrPos(yGridPos + 1, xGridPos)] << std::endl;
+	//std::cout << "   " << mapGrid[getArrPos(yGridPos, xGridPos + 1)] << std::endl << std::endl;
+}
+
+void sprite::set_velocity()
+{
 	switch (direction)
 	{
 	case 0:
@@ -183,17 +153,58 @@ void sprite::update(double dt, std::vector<int>* mapGrid, std::vector<sprite*>* 
 		yAnchor = 0;
 		break;
 	}
+}
 
-	hitPellet(pelletGrid, score);
+void sprite::set_direction(int input, std::vector<int>* mapGrid)
+{
+	switch (input)
+	{
+	case 1:
+		if (checkUp(*mapGrid) != 1 && checkUp(*mapGrid) != 4)
+		{
+			if (xPosInt >= xGridPos * 8 && xPosInt + 8 <= (xGridPos * 8) + 8)
+			{
+				direction = input;
+			}
+		}
+		break;
+	case 2:
+		if (checkLeft(*mapGrid) != 1 && checkLeft(*mapGrid) != 4)
+		{
+			if (yPosInt >= yGridPos * 8 && yPosInt + 8 <= (yGridPos * 8) + 8)
+			{
+				direction = input;
+			}
+		}
+		break;
+	case 3:
+		if (checkDown(*mapGrid) != 1 && checkDown(*mapGrid) != 4)
+		{
+			if (xPosInt >= xGridPos * 8 && xPosInt + 8 <= (xGridPos * 8) + 8)
+			{
+				direction = input;
+			}
+		}
+		break;
+	case 4:
+		if (checkRight(*mapGrid) != 1 && checkRight(*mapGrid) != 4)
+		{
+			if (yPosInt >= yGridPos * 8 && yPosInt + 8 <= (yGridPos * 8) + 8)
+			{
+				direction = input;
+			}
 
-	//std::cout << xAnchor << " " << yAnchor << std::endl;
-	//std::cout << xGridPos << " " << yGridPos << std::endl;
-
-	move(dt);
-
-	//std::cout << "   " << mapGrid[getArrPos(yGridPos, xGridPos - 1)] << std::endl;
-	//std::cout << mapGrid[getArrPos(yGridPos - 1, yGridPos)] << " " << yGridPos << " " << xGridPos << " " << mapGrid[getArrPos(yGridPos + 1, xGridPos)] << std::endl;
-	//std::cout << "   " << mapGrid[getArrPos(yGridPos, xGridPos + 1)] << std::endl << std::endl;
+		}
+		break;
+	case 5:
+		if (speed == 80)
+		{
+			speed = 160;
+		}
+		break;
+	default:
+		break;
+	}
 }
 
 void sprite::move(double dt)

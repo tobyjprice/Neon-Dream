@@ -197,19 +197,19 @@ void game_state::populate_map()
 			case 0: // Blank space
 				break;
 			case 1: // Wall
-				tempSprite = new sprite(8, 8, x * 8, y * 8, getWallSurface(x, y, mapWidth), getWallSurface(x, y, mapWidth), getWallSurface(x, y, mapWidth), gameRenderer);
+				tempSprite = new sprite(8, 8, x * 8, y * 8, getWallSurface(x, y, mapWidth), getWallSurface(x, y, mapWidth), getWallSurface(x, y, mapWidth), gameRenderer, &mapGrid);
 				spriteList.push_back(tempSprite);
 				break;
 			case 2: // Pellet
-				tempSprite = new sprite(2, 2, (x * 8) + 3, (y * 8) + 3, pellet, pellet, pellet, gameRenderer);
+				tempSprite = new sprite(2, 2, (x * 8) + 3, (y * 8) + 3, pellet, pellet, pellet, gameRenderer, &mapGrid);
 				pelletList[getArrPos(x, y, 28)] = tempSprite;
 				break;
 			case 3: // Power up
-				tempSprite = new sprite(4, 4, (x * 8) + 2, (y * 8) + 2, powerup, powerup, powerup, gameRenderer);
+				tempSprite = new sprite(4, 4, (x * 8) + 2, (y * 8) + 2, powerup, powerup, powerup, gameRenderer, &mapGrid);
 				pelletList[getArrPos(x, y, 28)] = tempSprite;
 				break;
 			case 4: // Ghost Gate
-				tempSprite = new sprite(8, 8, x * 8, y * 8, ghostWall, ghostWall, ghostWall, gameRenderer);
+				tempSprite = new sprite(8, 8, x * 8, y * 8, ghostWall, ghostWall, ghostWall, gameRenderer, &mapGrid);
 				spriteList.push_back(tempSprite);
 				break;
 			default:
@@ -222,7 +222,7 @@ void game_state::populate_map()
 
 void game_state::load_sprites()
 {
-	sprite* tempSprite = new sprite(12, 12, 108, 184, playerSurface, playerSurface2, playerSurface3, gameRenderer);
+	sprite* tempSprite = new sprite(12, 12, 108, 184, playerSurface, playerSurface2, playerSurface3, gameRenderer, &mapGrid);
 
 	tempSprite->xGridPos = 5;
 	tempSprite->yGridPos = 5;
@@ -467,7 +467,7 @@ void game_state::update(double dt)
 	else if (!paused)
 	{
 		int tempScore = playerScore;
-		player->update(dt, &mapGrid, &pelletList, currTick, input, &playerScore);
+		player->update(dt, &pelletList, currTick, input, &playerScore);
 		if (playerScore != tempScore)
 		{
 			logSystem->showScore(playerScore);

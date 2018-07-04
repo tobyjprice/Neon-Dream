@@ -1,2 +1,20 @@
-﻿  input.cpp
+﻿  game_state.cpp
+c:\users\tobyj\documents\portfolio\neon-dream\source\game_state.cpp(52): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.16299.0\ucrt\string.h(132): note: see declaration of 'strcpy'
+c:\users\tobyj\documents\portfolio\neon-dream\source\game_state.cpp(535): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.16299.0\ucrt\string.h(132): note: see declaration of 'strcpy'
+c:\users\tobyj\documents\portfolio\neon-dream\source\game_state.cpp(548): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.16299.0\ucrt\string.h(132): note: see declaration of 'strcpy'
+c:\users\tobyj\documents\portfolio\neon-dream\source\game_state.cpp(637): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\users\tobyj\documents\portfolio\neon-dream\source\game_state.cpp(638): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\users\tobyj\documents\portfolio\neon-dream\source\game_state.cpp(640): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\users\tobyj\documents\portfolio\neon-dream\source\game_state.cpp(641): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\users\tobyj\documents\portfolio\neon-dream\source\game_state.cpp(645): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\users\tobyj\documents\portfolio\neon-dream\source\game_state.cpp(646): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\users\tobyj\documents\portfolio\neon-dream\source\game_state.cpp(661): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\users\tobyj\documents\portfolio\neon-dream\source\game_state.cpp(662): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\users\tobyj\documents\portfolio\neon-dream\source\game_state.cpp(664): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\users\tobyj\documents\portfolio\neon-dream\source\game_state.cpp(665): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\users\tobyj\documents\portfolio\neon-dream\source\game_state.cpp(669): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\users\tobyj\documents\portfolio\neon-dream\source\game_state.cpp(670): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
   GamesProgrammingAssessment.vcxproj -> C:\Users\tobyj\Documents\Portfolio\Neon-Dream\source\Debug\GamesProgrammingAssessment.exe
