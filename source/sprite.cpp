@@ -103,21 +103,6 @@ void sprite::set_velocity()
 		}
 		break;
 	case 2:
-		if (checkLeft(*mapGrid) != 1 && checkLeft(*mapGrid) != 4)
-		{
-			if (yPosInt >= yGridPos * 8 && yPosInt + 8 <= (yGridPos * 8) + 8)
-			{
-				xVel = -1;
-				yVel = 0;
-				xAnchor = 7;
-			}
-		}
-		else
-		{
-			xVel = 0;
-		}
-		break;
-	case 3:
 		if (checkDown(*mapGrid) != 1 && checkDown(*mapGrid) != 4)
 		{
 			if (xPosInt >= xGridPos * 8 && xPosInt + 8 <= (xGridPos * 8) + 8)
@@ -130,6 +115,21 @@ void sprite::set_velocity()
 		else
 		{
 			yVel = 0;
+		}
+		break;
+	case 3:
+		if (checkLeft(*mapGrid) != 1 && checkLeft(*mapGrid) != 4)
+		{
+			if (yPosInt >= yGridPos * 8 && yPosInt + 8 <= (yGridPos * 8) + 8)
+			{
+				xVel = -1;
+				yVel = 0;
+				xAnchor = 7;
+			}
+		}
+		else
+		{
+			xVel = 0;
 		}
 		break;
 	case 4:
