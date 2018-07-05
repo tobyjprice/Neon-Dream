@@ -11,7 +11,7 @@ public:
 	~sprite();
 	void set_sfx(Mix_Chunk* pelletDeathSfx);
 	void animate();
-	void get_input();
+	virtual void get_input();
 	SDL_Texture* getTexture();
 	SDL_Rect getRect();
 	double getXPos();

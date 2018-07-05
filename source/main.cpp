@@ -84,13 +84,59 @@ void process_input(bool* running, SDL_Window &window, game_state* game, Input* i
 		{
 		case SDL_KEYDOWN:
 			input->process_input(&event.key.keysym.sym);
+
+			switch (event.key.keysym.sym)
+			{
+			case SDLK_ESCAPE:
+				SDL_Log("Key Esc pressed");
+				game->input = 6;
+				break;
+			case SDLK_w:
+				SDL_Log("Key w pressed");
+				game->input = 1;
+				break;
+			case SDLK_a:
+				SDL_Log("Key a pressed");
+				game->input = 2;
+				break;
+			case SDLK_s:
+				SDL_Log("Key s pressed");
+				game->input = 3;
+				break;
+			case SDLK_d:
+				SDL_Log("Key d pressed");
+				game->input = 4;
+				break;
+			case SDLK_RETURN:
+				SDL_Log("Key Enter pressed");
+				game->input = 5;
+				break;
+			case SDLK_SPACE:
+				SDL_Log("Space pressed");
+				game->input = 5;
+				break;
+			case SDLK_TAB:
+				SDL_Log("Tab Pressed");
+				if (!game->debugActive)
+				{
+					game->debugActive = true;
+				}
+				else
+				{
+					game->debugActive = false;
+				}
+
+			default:
+				break;
+			}
+
 			break;
 		default:
 			break;
 		}
 	}
 
-	/*SDL_Event event;
+	//SDL_Event event;
 
 	while (SDL_PollEvent(&event))
 	{
@@ -182,7 +228,7 @@ void process_input(bool* running, SDL_Window &window, game_state* game, Input* i
 		default:
 			break;
 		}
-	}*/
+	}
 }
 
 void update(game_state* game, double deltaTime)
