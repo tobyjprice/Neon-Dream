@@ -59,9 +59,10 @@ void sprite::set_sfx(Mix_Chunk* pelletDeathSfx)
 	pelletDeath = pelletDeathSfx;
 }
 
-void sprite::update(double dt, std::vector<sprite*>* pelletGrid, int tick, int input, int* score)
+void sprite::update(double dt, std::vector<sprite*>* pelletGrid, int tick, int* score)
 {
-	set_direction(input, mapGrid);
+	get_input();
+	set_direction();
 	set_velocity();
 
 	hitPellet(pelletGrid, score);
@@ -155,7 +156,7 @@ void sprite::set_velocity()
 	}
 }
 
-void sprite::set_direction(int input, std::vector<int>* mapGrid)
+void sprite::set_direction()
 {
 	switch (input)
 	{
@@ -274,6 +275,11 @@ void sprite::animate()
 		texture = SDL_CreateTextureFromSurface(renderer, surface);
 		animFrame = 0;
 	}
+}
+
+void sprite::get_input()
+{
+	input = -1;
 }
 
 void sprite::reset_sprite(int x, int y)

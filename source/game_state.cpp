@@ -8,7 +8,7 @@
 #include "options_menu.h"
 #include "SDL_mixer.h"
 
-game_state::game_state(SDL_Window* window, SDL_Renderer *renderer)
+game_state::game_state(SDL_Window* window, SDL_Renderer *renderer, Input* inputM)
 {
 	if (TTF_Init() != 0) {
 		SDL_LogCritical(SDL_LOG_CATEGORY_APPLICATION,
@@ -44,6 +44,8 @@ game_state::game_state(SDL_Window* window, SDL_Renderer *renderer)
 	musicVolume = 20;
 	gameOver = false;
 	gameWon = false;
+
+	inputManager = inputM;
 
 	std::string volString = "Music Volume - ";
 	volString.append(std::to_string(musicVolume));
@@ -223,7 +225,7 @@ void game_state::populate_map()
 void game_state::load_sprites()
 {
 	// Fill player var with new Player temp.
-	Player* tempPlr = new Player(12, 12, 108, 184, playerSurface, playerSurface2, playerSurface3, gameRenderer, &mapGrid);
+	Player* tempPlr = new Player(12, 12, 108, 184, playerSurface, playerSurface2, playerSurface3, gameRenderer, &mapGrid, inputManager);
 
 	tempPlr->xGridPos = 5;
 	tempPlr->yGridPos = 5;
@@ -468,7 +470,7 @@ void game_state::update(double dt)
 	else if (!paused)
 	{
 		int tempScore = playerScore;
-		player->update(dt, &pelletList, currTick, input, &playerScore);
+		player->update(dt, &pelletList, currTick, &playerScore);
 		if (playerScore != tempScore)
 		{
 			logSystem->showScore(playerScore);
@@ -480,7 +482,7 @@ void game_state::update(double dt)
 
 		for (auto& elem : ghostList)
 		{
-			elem->update(dt, &mapGrid, currTick);
+			//elem->update(dt, &mapGrid, currTick);
 
 			if (checkCollision(player, elem))
 			{

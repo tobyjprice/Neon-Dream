@@ -10,11 +10,12 @@
 #include "SDL_ttf.h"
 #include "SDL_mixer.h"
 #include "log_system.h"
+#include "input.h"
 
 class game_state
 {
 public:
-	game_state(SDL_Window* window, SDL_Renderer *renderer);
+	game_state(SDL_Window* window, SDL_Renderer *renderer, Input* inputManager);
 	~game_state();
 	void load_new_game();
 	void load_resources();
@@ -55,6 +56,7 @@ public:
 	int currTick, lastTick, gameStartTick, gameEndTick;
 	int input, mainMenuOutput, optionsOutput;
 	bool debugActive;
+	Input* inputManager;
 private:
 	Mix_Music* mainMusic;
 	Mix_Music* gameMusic;

@@ -25,8 +25,9 @@ int main(int argc, char* argv[])
 
 	SDL_Window* window = SDL_CreateWindow("Toby Price - 13480955", display.w / 4, display.h / 4, display.w / 2, display.h / 2, SDL_WINDOW_RESIZABLE);
 	SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, NULL);
-	game_state game(window, renderer);
-	Input inputManager;
+	Input* inputManager = new Input();
+
+	game_state game(window, renderer, inputManager);
 
 	SDL_RenderSetLogicalSize(game.gameRenderer, 224, 278);
 
@@ -56,7 +57,7 @@ int main(int argc, char* argv[])
 			t += dt;
 		}
 
-		process_input(&game.running, *window, &game, &inputManager);
+		process_input(&game.running, *window, &game, inputManager);
 		render(game);
 
 		if (x > 100)

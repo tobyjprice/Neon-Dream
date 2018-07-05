@@ -1,3 +1,3 @@
 #pragma once
 
-enum Action { UP, DOWN, LEFT, RIGHT, SELECT, BACK };
+enum Action { HAHA, UP, DOWN, LEFT, RIGHT, SELECT, BACK };

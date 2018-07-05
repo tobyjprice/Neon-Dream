@@ -11,13 +11,14 @@ public:
 	~sprite();
 	void set_sfx(Mix_Chunk* pelletDeathSfx);
 	void animate();
+	void get_input();
 	SDL_Texture* getTexture();
 	SDL_Rect getRect();
 	double getXPos();
 	Mix_Chunk* pelletDeath;
-	virtual void update(double deltaTime, std::vector<sprite*>* pelletGrid, int tick, int input, int* score);
+	virtual void update(double deltaTime, std::vector<sprite*>* pelletGrid, int tick, int* score);
 	void set_velocity();
-	void set_direction(int input, std::vector<int>* mapGrid);
+	void set_direction();
 	void move(double deltaTime);
 	void reset_sprite(int x, int y);
 	int checkRight(std::vector<int>& mapGrid);
@@ -32,12 +33,14 @@ public:
 	int top, bottom, left, right;
 	double xPos, yPos, xVel, yVel;
 	int speed;
-	int width, height, direction, input, xPosInt, yPosInt;
+	int width, height, direction, xPosInt, yPosInt;
 	int xGridPos, yGridPos, xAnchor, yAnchor;
 	bool moveUp, moveDown, moveLeft, moveRight;
 	SDL_Rect rect;
 	int animFrame;
 	std::vector<int>* mapGrid;
+
+	int input;
 protected:
 	SDL_Surface* surface;
 	SDL_Surface* surface2;

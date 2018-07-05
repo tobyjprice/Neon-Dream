@@ -9,6 +9,11 @@ Input::~Input()
 {
 }
 
+int Input::get_current_input()
+{
+	return input;
+}
+
 void Input::process_input(SDL_Keycode* inKey)
 {
 	switch (*inKey)
@@ -28,6 +33,10 @@ void Input::process_input(SDL_Keycode* inKey)
 	case SDLK_d:
 		input = RIGHT;
 		SDL_Log("Input: RIGHT");
+		break;
+	case SDLK_RETURN:
+		input = SELECT;
+		SDL_Log("Input: SELECT");
 		break;
 	default:
 		input = NULL;
