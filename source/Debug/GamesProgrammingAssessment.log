@@ -1,24 +1,3 @@
-﻿  sprite.cpp
-c:\users\tobyj\documents\portfolio\neon-dream\source\sprite.cpp(24): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-c:\users\tobyj\documents\portfolio\neon-dream\source\sprite.cpp(25): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-c:\users\tobyj\documents\portfolio\neon-dream\source\sprite.cpp(27): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-c:\users\tobyj\documents\portfolio\neon-dream\source\sprite.cpp(28): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-c:\users\tobyj\documents\portfolio\neon-dream\source\sprite.cpp(29): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-c:\users\tobyj\documents\portfolio\neon-dream\source\sprite.cpp(30): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-c:\users\tobyj\documents\portfolio\neon-dream\source\sprite.cpp(37): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-c:\users\tobyj\documents\portfolio\neon-dream\source\sprite.cpp(38): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-c:\users\tobyj\documents\portfolio\neon-dream\source\sprite.cpp(216): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-c:\users\tobyj\documents\portfolio\neon-dream\source\sprite.cpp(217): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-c:\users\tobyj\documents\portfolio\neon-dream\source\sprite.cpp(222): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-c:\users\tobyj\documents\portfolio\neon-dream\source\sprite.cpp(223): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-c:\users\tobyj\documents\portfolio\neon-dream\source\sprite.cpp(245): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-c:\users\tobyj\documents\portfolio\neon-dream\source\sprite.cpp(246): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-c:\users\tobyj\documents\portfolio\neon-dream\source\sprite.cpp(247): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-c:\users\tobyj\documents\portfolio\neon-dream\source\sprite.cpp(248): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-c:\users\tobyj\documents\portfolio\neon-dream\source\sprite.cpp(298): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-c:\users\tobyj\documents\portfolio\neon-dream\source\sprite.cpp(299): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-c:\users\tobyj\documents\portfolio\neon-dream\source\sprite.cpp(301): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-c:\users\tobyj\documents\portfolio\neon-dream\source\sprite.cpp(302): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-c:\users\tobyj\documents\portfolio\neon-dream\source\sprite.cpp(306): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-c:\users\tobyj\documents\portfolio\neon-dream\source\sprite.cpp(307): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+﻿  main.cpp
+c:\users\tobyj\documents\portfolio\neon-dream\source\main.cpp(47): warning C4244: 'initializing': conversion from '__int64' to 'double', possible loss of data
   GamesProgrammingAssessment.vcxproj -> C:\Users\tobyj\Documents\Portfolio\Neon-Dream\source\Debug\GamesProgrammingAssessment.exe

@@ -268,7 +268,7 @@ void render(game_state& game)
 		}
 		for (auto& ghost : game.ghostList)
 		{
-			if (ghost->direction == 2)
+			if (ghost->direction == LEFT)
 			{
 				SDL_RendererFlip flip = SDL_FLIP_HORIZONTAL;
 				SDL_RenderCopyEx(game.gameRenderer, ghost->getTexture(), NULL, &ghost->getRect(), 0, 0, flip);
@@ -285,7 +285,7 @@ void render(game_state& game)
 				SDL_RenderCopy(game.gameRenderer, pellet->getTexture(), NULL, &pellet->getRect());
 			}
 		}
-		if (game.player->direction == 2)
+		if (game.player->direction == LEFT)
 		{
 			SDL_RendererFlip flip = SDL_FLIP_HORIZONTAL;
 			SDL_RenderCopyEx(game.gameRenderer, game.player->getTexture(), NULL, &game.player->getRect(), 0,0, flip);
