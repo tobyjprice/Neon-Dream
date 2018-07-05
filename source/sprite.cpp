@@ -170,18 +170,18 @@ void sprite::set_direction()
 		}
 		break;
 	case 2:
-		if (checkLeft(*mapGrid) != 1 && checkLeft(*mapGrid) != 4)
+		if (checkDown(*mapGrid) != 1 && checkDown(*mapGrid) != 4)
 		{
-			if (yPosInt >= yGridPos * 8 && yPosInt + 8 <= (yGridPos * 8) + 8)
+			if (xPosInt >= xGridPos * 8 && xPosInt + 8 <= (xGridPos * 8) + 8)
 			{
 				direction = input;
 			}
 		}
 		break;
 	case 3:
-		if (checkDown(*mapGrid) != 1 && checkDown(*mapGrid) != 4)
+		if (checkLeft(*mapGrid) != 1 && checkLeft(*mapGrid) != 4)
 		{
-			if (xPosInt >= xGridPos * 8 && xPosInt + 8 <= (xGridPos * 8) + 8)
+			if (yPosInt >= yGridPos * 8 && yPosInt + 8 <= (yGridPos * 8) + 8)
 			{
 				direction = input;
 			}
