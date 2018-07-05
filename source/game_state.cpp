@@ -222,12 +222,13 @@ void game_state::populate_map()
 
 void game_state::load_sprites()
 {
-	sprite* tempSprite = new sprite(12, 12, 108, 184, playerSurface, playerSurface2, playerSurface3, gameRenderer, &mapGrid);
+	// Fill player var with new Player temp.
+	Player* tempPlr = new Player(12, 12, 108, 184, playerSurface, playerSurface2, playerSurface3, gameRenderer, &mapGrid);
 
-	tempSprite->xGridPos = 5;
-	tempSprite->yGridPos = 5;
+	tempPlr->xGridPos = 5;
+	tempPlr->yGridPos = 5;
 
-	player = tempSprite;
+	player = tempPlr;
 	player->set_sfx(blipSfx);
 
 	for (int x = 0; x < 4; x++)

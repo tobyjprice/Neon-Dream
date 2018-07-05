@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 #include "sprite.h"
+#include "Player.h"
 #include "ghost.h"
 #include "mapPoint.h"
 #include "menu.h"
@@ -43,7 +44,7 @@ public:
 	int getArrPos(int i, int j, int width);
 	sprite* getSprite(int spriteId);
 	bool game_state::checkCollision(sprite* one, sprite* two);
-	sprite* player;
+	Player* player;
 	std::vector<ghost*> ghostList;
 	SDL_Window* gameWindow;
 	SDL_Renderer* gameRenderer;

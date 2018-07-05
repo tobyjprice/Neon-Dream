@@ -1,5 +1,3 @@
 #pragma once
 
-enum Direction { UP, DOWN, LEFT, RIGHT };
-
-enum Action { SELECT, BACK };
+enum Action { UP, DOWN, LEFT, RIGHT, SELECT, BACK };
