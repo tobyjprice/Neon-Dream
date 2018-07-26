@@ -151,6 +151,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Controller.cpp" />
     <ClCompile Include="game_state.cpp" />
     <ClCompile Include="ghost.cpp" />
     <ClCompile Include="input.cpp" />
@@ -166,6 +167,7 @@
     <ClCompile Include="sprite.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Controller.h" />
     <ClInclude Include="Directions.h" />
     <ClInclude Include="game_state.h" />
     <ClInclude Include="ghost.h" />
