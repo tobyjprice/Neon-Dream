@@ -704,8 +704,45 @@ sprite* game_state::getSprite(int spriteId)
 	return spriteList[spriteId];
 }
 
-bool game_state::check_plr_to_wall_collision()
+void game_state::check_plr_to_wall_collision()
 {
-	
+	int xMapPos = player->xPos / 8;
+	int yMapPos = player->yPos / 8;
+	int moves[] = { 0,0,0,0 };
+
+
+	// Check each direction
+	// Up
+	if (mapGrid[get_1D_array_pos(xMapPos, yMapPos - 1)] == 4 || mapGrid[get_1D_array_pos(xMapPos, yMapPos - 1)] == 1)
+	{
+		moves[0] = 1;
+	}
+
+	// Down
+	if (mapGrid[get_1D_array_pos(xMapPos, yMapPos + 1)] == 4 || mapGrid[get_1D_array_pos(xMapPos, yMapPos + 1)] == 1)
+	{
+		moves[1] = 1;
+	}
+
+	// Left
+	if (mapGrid[get_1D_array_pos(xMapPos - 1, yMapPos)] == 4 || mapGrid[get_1D_array_pos(xMapPos - 1, yMapPos)] == 1)
+	{
+		moves[2] = 1;
+	}
+
+	// Right
+	if (mapGrid[get_1D_array_pos(xMapPos + 1, yMapPos)] == 4 || mapGrid[get_1D_array_pos(xMapPos + 1, yMapPos)] == 1)
+	{
+		moves[3] = 1;
+	}
+
+	//player->set_pot_moves(moves);
+}
+
+int game_state::get_1D_array_pos(int x, int y)
+{
+	int k = (y * mapWidth) + x;
+
+	return k;
 }
 

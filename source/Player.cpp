@@ -11,6 +11,11 @@ Player::~Player()
 {
 }
 
+void Player::set_pot_moves(std::vector<int> inMoves)
+{
+	availMoves = inMoves;
+}
+
 void Player::get_input()
 {
 	input = inputManager->get_current_input();
