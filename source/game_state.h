@@ -44,6 +44,7 @@ public:
 	SDL_Surface* getWallSurface(int x, int y, int width);
 	int getArrPos(int i, int j, int width);
 	sprite* getSprite(int spriteId);
+	bool check_plr_to_wall_collision();
 	bool game_state::checkCollision(sprite* one, sprite* two);
 	Player* player;
 	std::vector<ghost*> ghostList;

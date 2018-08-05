@@ -8,7 +8,6 @@ public:
 	~Controller();
 
 	void update();
-
 private:
 	virtual void processInput();
 	sprite* sprite;

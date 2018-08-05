@@ -704,3 +704,8 @@ sprite* game_state::getSprite(int spriteId)
 	return spriteList[spriteId];
 }
 
+bool game_state::check_plr_to_wall_collision()
+{
+	
+}
+
