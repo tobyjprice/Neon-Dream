@@ -264,35 +264,35 @@ void render(game_state& game)
 	{
 		for (auto& sprite : game.spriteList)
 		{
-			SDL_RenderCopy(game.gameRenderer, sprite->getTexture(), NULL, &sprite->getRect());
+			SDL_RenderCopy(game.gameRenderer, sprite->getTexture(), NULL, &sprite->rect);
 		}
 		for (auto& ghost : game.ghostList)
 		{
 			if (ghost->direction == LEFT)
 			{
 				SDL_RendererFlip flip = SDL_FLIP_HORIZONTAL;
-				SDL_RenderCopyEx(game.gameRenderer, ghost->getTexture(), NULL, &ghost->getRect(), 0, 0, flip);
+				SDL_RenderCopyEx(game.gameRenderer, ghost->getTexture(), NULL, &ghost->rect, 0, 0, flip);
 			}
 			else
 			{
-				SDL_RenderCopy(game.gameRenderer, ghost->getTexture(), NULL, &ghost->getRect());
+				SDL_RenderCopy(game.gameRenderer, ghost->getTexture(), NULL, &ghost->rect);
 			}
 		}
 		for (auto& pellet : game.pelletList)
 		{
 			if (pellet != NULL)
 			{
-				SDL_RenderCopy(game.gameRenderer, pellet->getTexture(), NULL, &pellet->getRect());
+				SDL_RenderCopy(game.gameRenderer, pellet->getTexture(), NULL, &pellet->rect);
 			}
 		}
 		if (game.player->direction == LEFT)
 		{
 			SDL_RendererFlip flip = SDL_FLIP_HORIZONTAL;
-			SDL_RenderCopyEx(game.gameRenderer, game.player->getTexture(), NULL, &game.player->getRect(), 0,0, flip);
+			SDL_RenderCopyEx(game.gameRenderer, game.player->getTexture(), NULL, &game.player->rect, 0,0, flip);
 		}
 		else
 		{
-			SDL_RenderCopy(game.gameRenderer, game.player->getTexture(), NULL, &game.player->getRect());
+			SDL_RenderCopy(game.gameRenderer, game.player->getTexture(), NULL, &game.player->rect);
 		}
 		if (game.pauseMenu->items.size() > 0 && game.pauseMenu->active == true)
 		{
